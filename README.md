@@ -13,7 +13,10 @@ https://github.com/openEHR/adl2-core
 
 ## Using ADL 2 Parser in this library involved:
 * ADL 2 Parser and Reference Model project from its Github location. The project was compiled and jar libraries were created.
-* These libraries were added to Mayo Clinic's public maven repository : http://informatics.mayo.edu/maven
+* These libraries were added to Mayo Clinic's public maven repository : 
+
+http://informatics.mayo.edu/maven
+
 * To use the libararies directory (without this project ADLLoader), please add the following dependencies in your maven environment:
 ```
 <dependency>
@@ -32,4 +35,18 @@ https://github.com/openEHR/adl2-core
             <version>1.0.0</version>
 </dependency> 
 ```
-* 
+* Add Following repository information in your POM:
+```
+<repository>
+            <id>edu.informatics.maven.thirdparty</id>
+            <name>Informatics Maven ThirdParty Repository</name>
+            <url>http://informatics.mayo.edu/maven/content/repositories/thirdparty</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+</repository>
+```
+* All Other previous instructions are part of this library - ADLLoader.
