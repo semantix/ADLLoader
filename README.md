@@ -13,7 +13,7 @@ https://github.com/openEHR/adl2-core
 
 ## Using ADL 2 Parser in this library involved:
 * ADL 2 Parser and Reference Model project from its Github location. The project was compiled and jar libraries were created.
-* These libraries were added to Mayo Clinic's public maven repository : 
+* These libraries were added to Mayo Clinic's public maven repository (as a third party library) : 
 
 http://informatics.mayo.edu/maven
 
