@@ -1,0 +1,20 @@
+<component name="libraryTable">
+  <library name="Maven: org.openEHR.adl2core:adl-parser:1.0.0">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/openEHR/adl2core/adl-parser/1.0.0/adl-parser-1.0.0.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/openEHR/adl2core/adl-parser/1.0.0/adl-parser-1.0.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/openEHR/adl2core/adl-parser/1.0.0/adl-parser-1.0.0-sources.jar!/" />
+      <root url="file://$PROJECT_DIR$/../adl2-core/model-am/src/main/java" />
+      <root url="file://$PROJECT_DIR$/../adl2-core/model-am/target/generated-sources/xjc" />
+      <root url="file://$PROJECT_DIR$/../adl2-core/model-rm/src/main/java" />
+      <root url="file://$PROJECT_DIR$/../adl2-core/model-rm/target/generated-sources/xjc" />
+      <root url="file://$PROJECT_DIR$/../adl2-core/adl-parser/src/main/java" />
+      <root url="file://$PROJECT_DIR$/../adl2-core/adl-parser/src/test/java" />
+      <root url="file://$PROJECT_DIR$/../adl2-core/adl-parser/target/generated-sources/antlr3" />
+    </SOURCES>
+  </library>
+</component>
