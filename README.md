@@ -17,7 +17,7 @@ https://github.com/openEHR/adl2-core
 
 http://informatics.mayo.edu/maven
 
-* To use the libararies directory (without this project ADLLoader), please add the following dependencies in your maven environment:
+* To use the libararies directory (without this project ADLWorks), please add the following dependencies in your maven environment:
 ```
 <dependency>
             <groupId>org.openEHR.adl2core</groupId>
