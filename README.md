@@ -1,4 +1,4 @@
-#ADLLoader
+#ADLWorks
 
 This Libaray loads ADL 2 Archetypes (in ADL format - .adl files) and returns in-memory objects.
 
@@ -49,4 +49,4 @@ http://informatics.mayo.edu/maven
             </snapshots>
 </repository>
 ```
-* All Other previous instructions are part of this library - ADLLoader.
+* All Other previous instructions are part of this library - ADLWorks.
