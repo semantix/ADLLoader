@@ -8,13 +8,13 @@
 
     <!-- Basic -->
     <groupId>edu.mayo.samepage</groupId>
-    <artifactId>adl2Loader</artifactId>
+    <artifactId>adlworks</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <!-- Project Information Change it later to match what we need -->
-    <name>ADL Loader</name>
-    <description>The ADL2 Loader</description>
+    <name>ADL Works</name>
+    <description>The ADL Works Library makes working with ADL easy.</description>
     <url>http://informatics.mayo.edu</url>
     <inceptionYear>2015</inceptionYear>
     <licenses>
@@ -60,22 +60,26 @@
             <artifactId>model-rm</artifactId>
             <version>1.0.0</version>
         </dependency>
-
         <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.4</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>commons-logging</groupId>
-                    <artifactId>commons-logging</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>com.github.semantix</groupId>
+            <artifactId>basic</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.1.3</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>18.0</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -115,6 +119,11 @@
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
+        </repository>
+
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
         </repository>
     </repositories>
 
