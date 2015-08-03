@@ -1,0 +1,31 @@
+package edu.mayo.samepage.adl.IF;
+
+/**
+ * Created by dks02 on 7/30/15.
+ */
+public enum ADLParam
+{
+    ADL_VERSION,
+    RM_RELEASE,
+    ARCHETYPE_NAMESPACE,
+
+    RM_PUBLISHER,
+    RM_PACKAGE,
+    RM_CLASS,
+
+    RESOURCE_PACKAGE_URI,
+
+    MAJOR_VERSION,
+    MINOR_VERSION,
+    PATCH_VERSION,
+    VERSION_STATUS,
+    BUILD_COUNT,
+
+    ORIGINAL_LANGUAGE,
+    COPYRIGHT,
+    DETAILS,
+    LIFECYCLE_STATE,
+    OTHER_CONTRIBUTORS,
+
+    PARENT_ARCHETYPE
+}
