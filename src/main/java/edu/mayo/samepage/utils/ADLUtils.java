@@ -1,8 +1,14 @@
 package edu.mayo.samepage.utils;
 
+import edu.mayo.samepage.adl.IF.ADLServices;
+import edu.mayo.samepage.adl.impl.adl2.ADL2ServicesImpl;
 import edu.mayo.samepage.adl.impl.adl2.ADLLoader;
 import org.openehr.adl.serializer.ArchetypeSerializer;
-import org.openehr.jaxb.am.Archetype;
+import org.openehr.jaxb.am.*;
+import org.openehr.jaxb.rm.DvText;
+import org.openehr.jaxb.rm.Element;
+import org.openehr.jaxb.rm.ItemSingle;
+import org.openehr.jaxb.rm.MultiplicityInterval;
 
 import java.io.IOException;
 import java.net.URL;
@@ -12,6 +18,9 @@ import java.net.URL;
  */
 public class ADLUtils
 {
+    public static ObjectFactory of = new ObjectFactory();
+    public static org.openehr.jaxb.rm.ObjectFactory ofrm = new org.openehr.jaxb.rm.ObjectFactory();
+
     public static String getArchetypeText(Archetype archetype)
     {
         if (archetype == null)
@@ -38,5 +47,64 @@ public class ADLUtils
         }
 
         return null;
+    }
+
+    public static CComplexObject getTestDefinition()
+    {
+
+        CComplexObject cComplexObject = of.createCComplexObject();
+        ItemSingle isingle = ofrm.createItemSingle();
+
+        Element elm = ofrm.createElement();
+        DvText dvt = ofrm.createDvText();
+        dvt.setValue("Patient");
+        elm.setName(dvt);
+        isingle.setItem(elm);
+
+        cComplexObject.setRmTypeName("ITEM-GROUP");
+        cComplexObject.setNodeId("id1");
+
+        CAttribute item = of.createCAttribute();
+        item.setRmAttributeName("item");
+        MultiplicityInterval mult = ofrm.createMultiplicityInterval();
+        mult.setLower(0);
+        mult.setUpper(1);
+        item.setExistence(mult);
+        cComplexObject.getAttributes().add(item);
+
+        return cComplexObject;
+    }
+
+    public static ArchetypeTerminology getTestTerminology()
+    {
+        TermBindingSet tbs = of.createTermBindingSet();
+        tbs.setTerminology("snomed-ct");
+        TermBindingItem ti1 = of.createTermBindingItem();
+        ti1.setCode("id1");
+        ti1.setValue("testID1 value");
+        TermBindingItem ti2 = of.createTermBindingItem();
+        ti2.setCode("id2");
+        ti2.setValue("testID2 value");
+        tbs.getItems().add(ti1);
+        tbs.getItems().add(ti2);
+
+        ArchetypeTerminology aterm = of.createArchetypeTerminology();
+        aterm.getTermBindings().add(tbs);
+
+        return aterm;
+    }
+
+    public static String getDemoArchetype()
+    {
+        ADLServices adlServices = new ADL2ServicesImpl();
+        Archetype testArch = adlServices.initializeArchetype("testArchetype", null, null);
+
+        CComplexObject definition = ADLUtils.getTestDefinition();
+        adlServices.updateDefinition(testArch, definition);
+
+        ArchetypeTerminology terminology = ADLUtils.getTestTerminology();
+        adlServices.updateTerminology(testArch, terminology);
+
+        return ADLUtils.getArchetypeText(testArch);
     }
 }

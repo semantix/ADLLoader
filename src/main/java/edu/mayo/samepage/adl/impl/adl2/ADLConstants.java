@@ -30,8 +30,6 @@ public class ADLConstants
     public static String ARCH_DEFAULT_COPYRIGHT = "Mayo Clinic";
     public static String ARCH_DEFAULT_LIFECYCLE_STATE = "unmanaged";
 
-
-
-
-
+    //Terminology
+    public static String ARCH_DEFAULT_TERMONOLOGY_SET = "default-set";
 }
