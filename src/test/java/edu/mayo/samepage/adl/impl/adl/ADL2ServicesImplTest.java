@@ -18,8 +18,11 @@ public class ADL2ServicesImplTest extends TestCase
         ADLArchetype testArch = adlServices.createArchetype("testArchetype", cimi, null);
         assertNotNull(testArch);
 
+        testArch.addArchetypeTerm("id2", null, "testDefinition2", null, "http://snomed.info/1234567");
+        testArch.addArchetypeTerm("id3", "es", "testDefinitionES3", null, "http://snomed.info/345678");
+        testArch.addArchetypeTerm("id4", "es", "testDefinitionES4", "loinc", "http://loinc.terms/5672rf");
+        testArch.addArchetypeTerm("id5", null, "testDefinition5", "loinc", "http://snomed.info/3444en");
         String archText = adlServices.serialize(testArch);
         assertNotNull(archText);
     }
-
  }

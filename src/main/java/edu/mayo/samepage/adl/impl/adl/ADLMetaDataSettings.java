@@ -44,6 +44,16 @@ public class ADLMetaDataSettings extends ADLSettings
         setValue(ADLParam.RM_PUBLISHER, rmPublisher);
     }
 
+    public String getRMPackage()
+    {
+        return getString(ADLParam.RM_PACKAGE, ADLConstants.RM_DEFAULT_PACKAGE);
+    }
+
+    public void setRMPackage(String rmPackage)
+    {
+        setValue(ADLParam.RM_PACKAGE, rmPackage);
+    }
+
     public String getRMRelaseVersion()
     {
         return getString(ADLParam.RM_RELEASE, ADLConstants.RM_RELEASE_VERSION);

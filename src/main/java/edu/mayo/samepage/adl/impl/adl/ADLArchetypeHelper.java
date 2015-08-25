@@ -90,6 +90,34 @@ public class ADLArchetypeHelper
         return card;
     }
 
+    public CodeDefinitionSet createCodeDefinitionSet(String language)
+    {
+        CodeDefinitionSet cds = of_.createCodeDefinitionSet();
+        cds.setLanguage(language);
+        return cds;
+    }
+
+    public StringDictionaryItem createStringDictionaryItem(String value)
+    {
+        StringDictionaryItem sdi = new StringDictionaryItem();
+        sdi.setId(ADLConstants.STRING_DEFINITION_PROPERTY);
+        sdi.setValue(value);
+        return sdi;
+    }
+
+    public String getStringDictionaryItemProperty()
+    {
+        return ADLConstants.STRING_DEFINITION_PROPERTY;
+    }
+
+    public ArchetypeTerm createArcehtypeTerm(String code, String value)
+    {
+        ArchetypeTerm aT =  of_.createArchetypeTerm();
+        aT.setCode(code);
+        aT.getItems().add(createStringDictionaryItem(value));
+        return aT;
+    }
+
     public TermBindingItem createTermBindingItem(String code, String value)
     {
         TermBindingItem tbi = of_.createTermBindingItem();

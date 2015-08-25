@@ -4,6 +4,7 @@ import org.apache.commons.lang.StringUtils;
 import org.openehr.jaxb.am.*;
 import org.openehr.jaxb.rm.CodePhrase;
 import org.openehr.jaxb.rm.ResourceDescription;
+import org.openehr.jaxb.rm.StringDictionaryItem;
 
 /**
  * Created by dks02 on 8/19/15.
@@ -66,7 +67,7 @@ public class ADLArchetype
             return;
 
         archetype_.setDefinition(definition);
-        addTerminologyTerm(null, definition.getNodeId(), description);
+        addArchetypeTerm(definition.getNodeId(), null, description, null, null);
     }
 
     public CComplexObject getDefinition()
@@ -98,28 +99,98 @@ public class ADLArchetype
         constraint.getAttributeTuples().add(attributeTuple);
     }
 
-    public void addTerminologyTerm(String termBindingSet,
-                                   String termItemCode,
-                                   String termItemValue)
+    public void addArchetypeTerm(String termId,
+                                 String termDefinitionSet,
+                                 String termDefinition,
+                                 String termBindingSet,
+                                 String termItemBindingValue)
     {
         if (archetype_ == null)
             return;
 
-        String tCode = termItemCode;
+        String tId = termId;
+        if (StringUtils.isEmpty(tId))
+            return;
+
+        ArchetypeTerminology archetypeTerminology = archetype_.getTerminology();
+        if (archetypeTerminology == null)
+            archetypeTerminology = helper_.createArchetypeTerminology();
+
+        addTermDefinition(archetypeTerminology, termDefinitionSet, termId, termDefinition);
+
+        if (termItemBindingValue != null)
+            addTermBinding(archetypeTerminology, termBindingSet, termId, termItemBindingValue);
+
+        archetype_.setTerminology(archetypeTerminology);
+    }
+
+    public void addTermDefinition(ArchetypeTerminology archetypeTerminology,
+                                String language,
+                                String termCode,
+                                String termDefinition)
+    {
+        String tCode = termCode;
         if (StringUtils.isEmpty(tCode))
             return;
 
-        String tValue = termItemValue;
-        if (StringUtils.isEmpty(tValue))
-            tValue = "";
+        String languageSet = language;
+        if (StringUtils.isEmpty(languageSet))
+            languageSet = archetype_.getOriginalLanguage().getCodeString();
+
+        String definition = termDefinition;
+        if (StringUtils.isEmpty(definition))
+            definition = "";
+
+        boolean added = false;
+        for (CodeDefinitionSet set : archetypeTerminology.getTermDefinitions())
+        {
+            if (!set.getLanguage().equals(languageSet))
+                continue;
+
+            for (ArchetypeTerm term : set.getItems()) {
+                if (!term.getCode().equals(tCode))
+                    continue;
+
+                for (StringDictionaryItem dictionaryItem : term.getItems()) {
+                    if (!helper_.getStringDictionaryItemProperty().equals(dictionaryItem.getId()))
+                        continue;
+
+                    dictionaryItem.setValue(definition);
+                    added = true;
+                }
+            }
+
+            if (!added)
+            {
+                set.getItems().add(helper_.createArcehtypeTerm(tCode, definition));
+                added = true;
+            }
+
+        }
+
+        if (!added) {
+            CodeDefinitionSet cds = helper_.createCodeDefinitionSet(languageSet);
+            cds.getItems().add(helper_.createArcehtypeTerm(tCode, definition));
+            archetypeTerminology.getTermDefinitions().add(cds);
+        }
+    }
+
+    public void addTermBinding(ArchetypeTerminology archetypeTerminology,
+                               String termBindingSet,
+                               String termCode,
+                               String termBinding)
+    {
+        String tCode = termCode;
+        if (StringUtils.isEmpty(tCode))
+            return;
 
         String setName = termBindingSet;
         if (StringUtils.isEmpty(setName))
             setName = meta_.getDefaultTerminologySetName();
 
-        ArchetypeTerminology archetypeTerminology = archetype_.getTerminology();
-        if (archetypeTerminology == null)
-            archetypeTerminology = helper_.createArchetypeTerminology();
+        String tBinding = termBinding;
+        if (StringUtils.isEmpty(tBinding))
+            tBinding = "";
 
         boolean added = false;
         for (TermBindingSet set : archetypeTerminology.getTermBindings())
@@ -132,13 +203,13 @@ public class ADLArchetype
                 if (!item.getCode().equals(tCode))
                     continue;
 
-                item.setValue(tValue);
+                item.setValue(tBinding);
                 added = true;
             }
 
             if (!added)
             {
-                TermBindingItem newItem = helper_.createTermBindingItem(tCode, tValue);
+                TermBindingItem newItem = helper_.createTermBindingItem(tCode, tBinding);
                 set.getItems().add(newItem);
                 added = true;
             }
@@ -147,10 +218,9 @@ public class ADLArchetype
         if (!added)
         {
             TermBindingSet tbs = helper_.createTermBindingSet(setName);
-            tbs.getItems().add(helper_.createTermBindingItem(tCode, tValue));
+            tbs.getItems().add(helper_.createTermBindingItem(tCode, tBinding));
             archetypeTerminology.getTermBindings().add(tbs);
         }
-
-        archetype_.setTerminology(archetypeTerminology);
     }
+
 }
