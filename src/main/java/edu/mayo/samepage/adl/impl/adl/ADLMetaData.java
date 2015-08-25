@@ -1,4 +1,4 @@
-package edu.mayo.samepage.adl.impl.adl2;
+package edu.mayo.samepage.adl.impl.adl;
 
 import edu.mayo.samepage.adl.IF.ADLParam;
 import org.apache.commons.lang.StringUtils;
@@ -53,5 +53,13 @@ public class ADLMetaData extends ADLMetaDataSettings
     public String getDefaultTerminologySetName()
     {
         return ADLConstants.ARCH_DEFAULT_TERMONOLOGY_SET;
+    }
+
+    public void setDefaultTerminologySetName(String defaultTerminologySetName)
+    {
+        if (StringUtils.isEmpty(defaultTerminologySetName))
+            return;
+
+        ADLConstants.ARCH_DEFAULT_TERMONOLOGY_SET = defaultTerminologySetName;
     }
 }

@@ -1,4 +1,4 @@
-package edu.mayo.samepage.adl.impl.adl2;
+package edu.mayo.samepage.adl.impl.adl;
 
 /**
  * Created by dks02 on 8/3/15.

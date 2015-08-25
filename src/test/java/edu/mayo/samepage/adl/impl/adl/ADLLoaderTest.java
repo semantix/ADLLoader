@@ -1,4 +1,4 @@
-package edu.mayo.samepage.adl.impl.adl2;
+package edu.mayo.samepage.adl.impl.adl;
 
 import org.junit.Test;
 import org.lexemantix.utils.file.LMFileUtils;

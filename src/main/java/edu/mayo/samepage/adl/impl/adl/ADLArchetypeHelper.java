@@ -1,4 +1,4 @@
-package edu.mayo.samepage.adl.impl.adl2;
+package edu.mayo.samepage.adl.impl.adl;
 
 import org.apache.commons.lang.StringUtils;
 import org.openehr.jaxb.am.*;
@@ -10,8 +10,8 @@ import org.openehr.jaxb.rm.ObjectFactory;
  */
 public class ADLArchetypeHelper
 {
-    private static org.openehr.jaxb.am.ObjectFactory of_ = new org.openehr.jaxb.am.ObjectFactory();
-    private static ObjectFactory ofrm_ = new ObjectFactory();
+    private org.openehr.jaxb.am.ObjectFactory of_ = new org.openehr.jaxb.am.ObjectFactory();
+    private ObjectFactory ofrm_ = new ObjectFactory();
 
     public Archetype createArchetype()
     {
@@ -37,35 +37,19 @@ public class ADLArchetypeHelper
     public ResourceDescription createResourceDescription(String copyright,
                                                          String lifeCycleState,
                                                          String packageUri,
-                                                         AuthoredResource parent)
+                                                         AuthoredResource parentResource)
     {
         ResourceDescription rd = ofrm_.createResourceDescription();
         rd.setCopyright(copyright);
         rd.setLifecycleState(lifeCycleState);
 
-        if (parent != null)
-            rd.setParentResource(parent);
+        if (parentResource != null)
+            rd.setParentResource(parentResource);
 
         if (!StringUtils.isEmpty(packageUri))
             rd.setResourcePackageUri(packageUri);
 
         return rd;
-    }
-
-    public CComplexObject createComplexObjectConstraint(String rmType,
-                                                        String id)
-    {
-        if (StringUtils.isEmpty(rmType))
-            return null;
-
-        if (StringUtils.isEmpty(id))
-            return null;
-
-        CComplexObject cComplexObject = of_.createCComplexObject();
-        cComplexObject.setRmTypeName(rmType);
-        cComplexObject.setNodeId(id);
-
-        return cComplexObject;
     }
 
     public CAttribute createAttributeConstraint(String rmAttributeName,
@@ -120,5 +104,21 @@ public class ADLArchetypeHelper
         tbs.setTerminology(setName);
 
         return tbs;
+    }
+
+    public CComplexObject createComplexObjectConstraint(String rmType,
+                                                        String id)
+    {
+        if (StringUtils.isEmpty(rmType))
+            return null;
+
+        if (StringUtils.isEmpty(id))
+            return null;
+
+        CComplexObject cComplexObject = of_.createCComplexObject();
+        cComplexObject.setRmTypeName(rmType);
+        cComplexObject.setNodeId(id);
+
+        return cComplexObject;
     }
 }

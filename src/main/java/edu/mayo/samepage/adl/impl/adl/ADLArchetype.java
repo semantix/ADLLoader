@@ -1,4 +1,4 @@
-package edu.mayo.samepage.adl.impl.adl2;
+package edu.mayo.samepage.adl.impl.adl;
 
 import org.apache.commons.lang.StringUtils;
 import org.openehr.jaxb.am.*;
@@ -16,20 +16,23 @@ public class ADLArchetype
 
     public ADLArchetype(String name,
                         ADLMetaData meta,
-                        ADLArchetypeHelper helper,
-                        CComplexObject definition)
+                        ADLArchetypeHelper helper)
     {
-        if (meta_ != null)
+        if (meta != null)
             meta_ = meta;
 
-        if (helper_ != null)
+        if (helper != null)
             helper_ = helper;
 
         archetype_ = helper_.createArchetype();
 
+        if (meta_.getParentID() != null)
+            archetype_.setParentArchetypeId(meta_.getParentID());
+
         archetype_.setAdlVersion(meta_.getADLVersion());
         archetype_.setRmRelease(meta_.getRMRelaseVersion());
         archetype_.setIsGenerated(meta_.getIsGenerated());
+
         archetype_.setArchetypeId(meta_.createArchetypeId(name));
 
         CodePhrase language = meta_.getOriginalLanguage();
@@ -40,15 +43,16 @@ public class ADLArchetype
         archetype_.setOriginalLanguage(language);
 
         ResourceDescription desc = helper_.createResourceDescription(
-                                    meta_.getCopyright(),
-                                    meta_.getLifeCycleState(),
-                                    meta_.getResourcePackageURI(),
-                                    meta_.getParent());
+                meta_.getCopyright(),
+                meta_.getLifeCycleState(),
+                meta_.getResourcePackageURI(),
+                null);
+
         archetype_.setDescription(desc);
 
-        if (definition != null)
-            archetype_.setDefinition(definition);
-
+        CComplexObject topConstraint =
+                helper_.createComplexObjectConstraint(meta_.getRMClassName(), meta_.createNewId());
+        setDefinition(topConstraint, name);
     }
 
     public Archetype getArchetype()
@@ -56,12 +60,13 @@ public class ADLArchetype
         return this.archetype_;
     }
 
-    public void setDefinition(CComplexObject definition)
+    public void setDefinition(CComplexObject definition, String description)
     {
         if (archetype_ == null)
             return;
 
         archetype_.setDefinition(definition);
+        addTerminologyTerm(null, definition.getNodeId(), description);
     }
 
     public CComplexObject getDefinition()
@@ -148,5 +153,4 @@ public class ADLArchetype
 
         archetype_.setTerminology(archetypeTerminology);
     }
-
 }

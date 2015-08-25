@@ -1,8 +1,9 @@
-package edu.mayo.samepage.adl.impl.adl2;
+package edu.mayo.samepage.adl.impl.adl;
 
 import edu.mayo.samepage.adl.IF.ADLParam;
 
 import java.util.Hashtable;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by dks02 on 8/20/15.
@@ -13,6 +14,15 @@ public class ADLSettings
     protected String rmDelimiter_ = "-";
     protected String delimiter_ = ".";
 
+    protected String idPrefix_ = "id";
+    protected String vsPrefix_ = "ac";
+    protected String pvPrefix_ = "at";
+
+    protected AtomicInteger idCounter = new AtomicInteger(0);
+    protected AtomicInteger vsCounter = new AtomicInteger(0);
+    protected AtomicInteger pvCounter = new AtomicInteger(0);
+
+    private String BLANK = "";
 
     private Hashtable<ADLParam, Object> settings_ = new Hashtable<ADLParam, Object>();
 
@@ -24,18 +34,18 @@ public class ADLSettings
         settings_.put(ADLParam.RM_PUBLISHER, ADLConstants.RM_DEFAULT_PUBLISHER);
         settings_.put(ADLParam.RM_PACKAGE, ADLConstants.RM_DEFAULT_PACKAGE);
         settings_.put(ADLParam.RM_CLASS, ADLConstants.RM_DEFAULT_CLASS);
-        settings_.put(ADLParam.RESOURCE_PACKAGE_URI, null);
+        settings_.put(ADLParam.RESOURCE_PACKAGE_URI, BLANK);
         settings_.put(ADLParam.MAJOR_VERSION, ADLConstants.ARCH_DEFAULT_MAJOR_VERSION);
         settings_.put(ADLParam.MINOR_VERSION, ADLConstants.ARCH_DEFAULT_MINOR_VERSION);
         settings_.put(ADLParam.PATCH_VERSION, ADLConstants.ARCH_DEFAULT_PATCH_VERSION);
         settings_.put(ADLParam.VERSION_STATUS, ADLConstants.ARCH_DEFAULT_VERSION_STATUS);
         settings_.put(ADLParam.BUILD_COUNT, ADLConstants.ARCH_DEFAULT_BUILD_COUNT);
-        settings_.put(ADLParam.ORIGINAL_LANGUAGE, null);
+        settings_.put(ADLParam.ORIGINAL_LANGUAGE, BLANK);
         settings_.put(ADLParam.COPYRIGHT, ADLConstants.ARCH_DEFAULT_COPYRIGHT);
-        settings_.put(ADLParam.DETAILS, null);
+        settings_.put(ADLParam.DETAILS, BLANK);
         settings_.put(ADLParam.LIFECYCLE_STATE, ADLConstants.ARCH_DEFAULT_LIFECYCLE_STATE);
-        settings_.put(ADLParam.OTHER_CONTRIBUTORS, null);
-        settings_.put(ADLParam.PARENT_ARCHETYPE, null);
+        settings_.put(ADLParam.OTHER_CONTRIBUTORS, BLANK);
+        settings_.put(ADLParam.PARENT_ARCHETYPE_ID, BLANK);
     }
 
     public boolean getIsGenerated()
@@ -64,6 +74,19 @@ public class ADLSettings
             return;
 
         settings_.put(param, value);
+    }
+
+    public String createNewId()
+    {
+        return idPrefix_ + idCounter.incrementAndGet();
+    }
+    public String createNewValueSetId()
+    {
+        return vsPrefix_ + vsCounter.incrementAndGet();
+    }
+    public String createNewPermissibleValueId()
+    {
+        return pvPrefix_ + pvCounter.incrementAndGet();
     }
 
 }

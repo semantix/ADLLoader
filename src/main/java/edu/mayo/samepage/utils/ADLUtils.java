@@ -1,8 +1,6 @@
 package edu.mayo.samepage.utils;
 
-import edu.mayo.samepage.adl.IF.ADLServices;
-import edu.mayo.samepage.adl.impl.adl2.ADL2ServicesImpl;
-import edu.mayo.samepage.adl.impl.adl2.ADLLoader;
+import edu.mayo.samepage.adl.impl.adl.ADLLoader;
 import org.openehr.adl.serializer.ArchetypeSerializer;
 import org.openehr.jaxb.am.*;
 import org.openehr.jaxb.rm.DvText;
@@ -64,6 +62,7 @@ public class ADLUtils
         cComplexObject.setRmTypeName("ITEM-GROUP");
         cComplexObject.setNodeId("id1");
 
+
         CAttribute item = of.createCAttribute();
         item.setRmAttributeName("item");
         MultiplicityInterval mult = ofrm.createMultiplicityInterval();
@@ -92,19 +91,5 @@ public class ADLUtils
         aterm.getTermBindings().add(tbs);
 
         return aterm;
-    }
-
-    public static String getDemoArchetype()
-    {
-        ADLServices adlServices = new ADL2ServicesImpl();
-        Archetype testArch = adlServices.initializeArchetype("testArchetype", null, null);
-
-        CComplexObject definition = ADLUtils.getTestDefinition();
-        adlServices.updateDefinition(testArch, definition);
-
-        ArchetypeTerminology terminology = ADLUtils.getTestTerminology();
-        adlServices.updateTerminology(testArch, terminology);
-
-        return ADLUtils.getArchetypeText(testArch);
     }
 }

@@ -1,7 +1,7 @@
-package edu.mayo.samepage.adl.impl.adl2;
+package edu.mayo.samepage.adl.impl.adl;
 
 import edu.mayo.samepage.adl.IF.ADLParam;
-import org.openehr.jaxb.rm.AuthoredResource;
+import org.openehr.jaxb.rm.ArchetypeId;
 import org.openehr.jaxb.rm.CodePhrase;
 
 /**
@@ -34,6 +34,16 @@ public class ADLMetaDataSettings extends ADLSettings
         setValue(ADLParam.ADL_VERSION, adlVersion);
     }
 
+    public String getRMPublisher()
+    {
+        return getString(ADLParam.RM_PUBLISHER, ADLConstants.RM_DEFAULT_PUBLISHER);
+    }
+
+    public void setRMPublisher(String rmPublisher)
+    {
+        setValue(ADLParam.RM_PUBLISHER, rmPublisher);
+    }
+
     public String getRMRelaseVersion()
     {
         return getString(ADLParam.RM_RELEASE, ADLConstants.RM_RELEASE_VERSION);
@@ -43,6 +53,7 @@ public class ADLMetaDataSettings extends ADLSettings
     {
         setValue(ADLParam.RM_RELEASE, rmVersion);
     }
+
     public String getCopyright()
     {
         return getString(ADLParam.COPYRIGHT, ADLConstants.ARCH_DEFAULT_COPYRIGHT);
@@ -83,18 +94,18 @@ public class ADLMetaDataSettings extends ADLSettings
         setValue(ADLParam.RM_CLASS, rmClassName);
     }
 
-    public AuthoredResource getParent()
+    public ArchetypeId getParentID()
     {
-        Object parent =  getValue(ADLParam.PARENT_ARCHETYPE);
+        Object parentId =  getValue(ADLParam.PARENT_ARCHETYPE_ID);
 
-        if ((parent != null)&&(parent instanceof AuthoredResource))
-            return (AuthoredResource) parent;
+        if ((parentId != null)&&(parentId instanceof ArchetypeId))
+            return (ArchetypeId) parentId;
 
         return null;
     }
 
-    public void setParent(AuthoredResource parent)
+    public void setParentID(ArchetypeId parentId)
     {
-        setValue(ADLParam.PARENT_ARCHETYPE, parent);
+        setValue(ADLParam.PARENT_ARCHETYPE_ID, parentId);
     }
 }

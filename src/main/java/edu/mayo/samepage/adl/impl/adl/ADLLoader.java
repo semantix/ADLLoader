@@ -1,4 +1,4 @@
-package edu.mayo.samepage.adl.impl.adl2;
+package edu.mayo.samepage.adl.impl.adl;
 
 import com.google.common.base.Charsets;
 import org.apache.commons.io.IOUtils;

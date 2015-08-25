@@ -1,8 +1,8 @@
 package edu.mayo.samepage.adl.IF;
 
-import edu.mayo.samepage.adl.impl.adl2.ADLArchetype;
-import edu.mayo.samepage.adl.impl.adl2.ADLArchetypeHelper;
-import edu.mayo.samepage.adl.impl.adl2.ADLMetaData;
+import edu.mayo.samepage.adl.impl.adl.ADLArchetype;
+import edu.mayo.samepage.adl.impl.adl.ADLArchetypeHelper;
+import edu.mayo.samepage.adl.impl.adl.ADLMetaData;
 
 /**
  * Created by dks02 on 7/28/15.
