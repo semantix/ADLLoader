@@ -5,6 +5,9 @@ import org.openehr.jaxb.am.*;
 import org.openehr.jaxb.rm.*;
 import org.openehr.jaxb.rm.ObjectFactory;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Created by dks02 on 8/21/15.
  */
@@ -52,9 +55,9 @@ public class ADLArchetypeHelper
         return rd;
     }
 
-    public CAttribute createAttributeConstraint(String rmAttributeName,
-                                                MultiplicityInterval existence,
-                                                Cardinality cardinality)
+    private CAttribute createAttributeConstraint(String rmAttributeName,
+                                                 MultiplicityInterval existence,
+                                                 Cardinality cardinality)
     {
         CAttribute attriuteConstraint = of_.createCAttribute();
         attriuteConstraint.setRmAttributeName(rmAttributeName);
@@ -64,6 +67,18 @@ public class ADLArchetypeHelper
 
         if (cardinality != null)
             attriuteConstraint.setCardinality(cardinality);
+
+        return attriuteConstraint;
+    }
+
+    public CAttribute createAttributeConstraints(String rmAttributeName,
+                                                 MultiplicityInterval existence,
+                                                 Cardinality cardinality,
+                                                 List<CObject> match)
+    {
+        CAttribute attriuteConstraint = createAttributeConstraint(rmAttributeName, existence, cardinality);
+
+        attriuteConstraint.getChildren().addAll(match);
 
         return attriuteConstraint;
     }
@@ -97,24 +112,38 @@ public class ADLArchetypeHelper
         return cds;
     }
 
-    public StringDictionaryItem createStringDictionaryItem(String value)
+    public StringDictionaryItem createStringDictionaryItem(String id, String value)
     {
         StringDictionaryItem sdi = new StringDictionaryItem();
-        sdi.setId(ADLConstants.STRING_DEFINITION_PROPERTY);
+        sdi.setId(id);
         sdi.setValue(value);
         return sdi;
     }
 
-    public String getStringDictionaryItemProperty()
+    public String getTermDefinitionTextProperty()
     {
-        return ADLConstants.STRING_DEFINITION_PROPERTY;
+        return ADLConstants.TERM_DEFINITION_TEXT_PROPERTY;
     }
 
-    public ArchetypeTerm createArcehtypeTerm(String code, String value)
+    public String getTermDescriptionProperty()
+    {
+        return ADLConstants.TERM_DEFINITION_DESCRIPTION_PROPERTY;
+    }
+
+    public ArchetypeTerm createArcehtypeTerm(String code, String definition, String description)
     {
         ArchetypeTerm aT =  of_.createArchetypeTerm();
         aT.setCode(code);
-        aT.getItems().add(createStringDictionaryItem(value));
+
+        String def = definition;
+        if (StringUtils.isEmpty(definition))
+            def = "";
+
+        aT.getItems().add(createStringDictionaryItem(getTermDefinitionTextProperty(), def));
+
+        if (!StringUtils.isEmpty(description))
+            aT.getItems().add(createStringDictionaryItem(getTermDescriptionProperty(), description));
+
         return aT;
     }
 
@@ -135,7 +164,8 @@ public class ADLArchetypeHelper
     }
 
     public CComplexObject createComplexObjectConstraint(String rmType,
-                                                        String id)
+                                                        String id,
+                                                        MultiplicityInterval occurrence)
     {
         if (StringUtils.isEmpty(rmType))
             return null;
@@ -147,6 +177,57 @@ public class ADLArchetypeHelper
         cComplexObject.setRmTypeName(rmType);
         cComplexObject.setNodeId(id);
 
+        if (occurrence != null)
+            cComplexObject.setOccurrences(occurrence);
+
         return cComplexObject;
+    }
+
+    public void addAttributeConstraints(CComplexObject container,
+                                       String attribute,
+                                       MultiplicityInterval occurrence,
+                                       Cardinality cardinality,
+                                       CObject... contained)
+    {
+        if (contained == null)
+            return;
+
+        List<CObject> matches = Arrays.asList(contained);
+        addAttributeConstraints(container, attribute, occurrence, cardinality, matches);
+    }
+
+    public void addAttributeConstraints(CComplexObject container,
+                                        String attribute,
+                                        MultiplicityInterval occurrence,
+                                        Cardinality cardinality,
+                                        List<CObject> contained)
+    {
+        if (container == null)
+            return;
+
+        if (contained == null)
+            return;
+
+        if (StringUtils.isEmpty(attribute))
+            return;
+
+        CAttribute attConstraints = createAttributeConstraints(attribute, occurrence, cardinality, contained);
+
+        if (attConstraints != null)
+            container.getAttributes().add(attConstraints);
+    }
+
+    public ValueSetItem createValueSetItem(String id, String... members)
+    {
+        if (StringUtils.isEmpty(id))
+            return null;
+
+        ValueSetItem valueSetItem = of_.createValueSetItem();
+        valueSetItem.setId(id);
+
+        for(String member :members)
+            valueSetItem.getMembers().add(member);
+
+        return valueSetItem;
     }
 }

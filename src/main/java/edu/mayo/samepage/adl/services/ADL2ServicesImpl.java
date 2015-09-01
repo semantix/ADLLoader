@@ -15,9 +15,9 @@ public class ADL2ServicesImpl implements ADLServices
 {
     final static Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ADL2ServicesImpl.class);
 
-    public ADLArchetype createArchetype(String name, ADLMetaData metaData, ADLArchetypeHelper helper)
+    public ADLArchetype createArchetype(String name, String description, ADLMetaData metaData, ADLArchetypeHelper helper)
     {
-        return new ADLArchetype(name, metaData, helper);
+        return new ADLArchetype(name, description, metaData, helper);
     }
 
     public String serialize(ADLArchetype archetype)

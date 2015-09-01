@@ -7,12 +7,14 @@ import edu.mayo.samepage.adl.impl.adl.ADLMetaData;
  */
 public class CIMIRMMetaData extends ADLMetaData
 {
+    public CIMIRMModel cimirm = new CIMIRMModel();
+
     public CIMIRMMetaData()
     {
         super();
         setRMPublisher("CIMI");
-        setRMClassName("ITEM-GROUP");
-        setRMRelaseVersion("3.0.3");
+        setRMClassName("ITEM_GROUP");
+        setRMRelaseVersion("2.0.2");
 
         setADLVersion("2.0");
 

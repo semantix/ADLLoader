@@ -1,6 +1,7 @@
 package edu.mayo.samepage.adl.impl.adl;
 
 import edu.mayo.samepage.adl.IF.ADLParam;
+import org.openehr.adl.rm.RmModel;
 
 import java.util.Hashtable;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -25,6 +26,8 @@ public class ADLSettings
     private String BLANK = "";
 
     private Hashtable<ADLParam, Object> settings_ = new Hashtable<ADLParam, Object>();
+
+    protected RmModel rmModel_ = null;
 
     public ADLSettings()
     {

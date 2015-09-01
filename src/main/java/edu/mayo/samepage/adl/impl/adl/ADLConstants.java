@@ -34,5 +34,6 @@ public class ADLConstants
     public static String ARCH_DEFAULT_TERMONOLOGY_SET = "default-set";
 
     // Used in Term Definitions
-    public static String STRING_DEFINITION_PROPERTY = "text";
+    public static String TERM_DEFINITION_TEXT_PROPERTY = "text";
+    public static String TERM_DEFINITION_DESCRIPTION_PROPERTY = "description";
 }

@@ -9,6 +9,6 @@ import edu.mayo.samepage.adl.impl.adl.ADLMetaData;
  */
 public interface ADLServices
 {
-    public ADLArchetype createArchetype(String name, ADLMetaData metaData, ADLArchetypeHelper helper);
+    public ADLArchetype createArchetype(String name, String description, ADLMetaData metaData, ADLArchetypeHelper helper);
     public String serialize(ADLArchetype archetype);
 }
