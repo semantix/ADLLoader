@@ -32,6 +32,21 @@ public class CIMITypes
         }
     }
 
+    public static CTerminologyCode getTerminologyConstraint(String id, String... members)
+    {
+        if (StringUtils.isEmpty(id))
+            return null;
+
+        CTerminologyCode terminologyCode = of_.createCTerminologyCode();
+        terminologyCode.setTerminologyId(id);
+
+        if (members != null)
+            for (String member : members)
+                terminologyCode.getCodeList().add(member);
+
+        return terminologyCode;
+    }
+
     public static Interval getIntervalFor(CIMIPrimitiveTypes type)
     {
         if (type == null)

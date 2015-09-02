@@ -62,6 +62,15 @@ public class ADLArchetype
         return this.archetype_;
     }
 
+    public ArchetypeTerminology getTerminology()
+    {
+        ArchetypeTerminology archetypeTerminology = archetype_.getTerminology();
+        if (archetypeTerminology == null)
+            archetypeTerminology = helper_.createArchetypeTerminology();
+
+        return archetypeTerminology;
+    }
+
     public void setDefinition(CComplexObject definition, String definitionText, String descriptionText)
     {
         if (archetype_ == null)
@@ -114,9 +123,7 @@ public class ADLArchetype
         if (StringUtils.isEmpty(tId))
             return;
 
-        ArchetypeTerminology archetypeTerminology = archetype_.getTerminology();
-        if (archetypeTerminology == null)
-            archetypeTerminology = helper_.createArchetypeTerminology();
+        ArchetypeTerminology archetypeTerminology = getTerminology();
 
         addTermDefinition(archetypeTerminology, termDefinitionSet, termId, termDefinition, termDescription);
 
@@ -189,13 +196,13 @@ public class ADLArchetype
         }
     }
 
-    public void updateValueSet(ArchetypeTerminology archetypeTerminology,
-                                  String valueSetId,
-                                  String... valueSetMembers)
+    public void updateValueSet(String valueSetId, String... valueSetMembers)
     {
         String vsId = valueSetId;
         if (StringUtils.isEmpty(vsId))
             return;
+
+        ArchetypeTerminology archetypeTerminology = getTerminology();
 
         boolean added = false;
         for (ValueSetItem valueSetItem : archetypeTerminology.getValueSets())
