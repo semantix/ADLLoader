@@ -13,7 +13,6 @@ public class CIMIRMMetaData extends ADLMetaData
     {
         super();
         setRMPublisher("CIMI");
-        setRMClassName("ITEM_GROUP");
         setRMRelaseVersion("2.0.2");
 
         setADLVersion("2.0");

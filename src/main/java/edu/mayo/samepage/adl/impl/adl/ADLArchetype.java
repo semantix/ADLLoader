@@ -275,5 +275,4 @@ public class ADLArchetype
             archetypeTerminology.getTermBindings().add(tbs);
         }
     }
-
 }

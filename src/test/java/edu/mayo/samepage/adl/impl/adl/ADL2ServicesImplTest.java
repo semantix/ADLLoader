@@ -37,8 +37,18 @@ public class ADL2ServicesImplTest extends TestCase
     @Test
     public void testAddConstraints()
     {
+        String rmPackageName = "DBGAP";
+        String item_group = "ITEM_GROUP";
+        String element = "ELEMENT";
+        String count = "COUNT";
+        String itemAtt = "item";
+        String valueAtt = "value";
+
         CIMIRMMetaData cimi = new CIMIRMMetaData();
-        cimi.setRMPackage("DBGAP");
+        cimi.setRMPackage(rmPackageName);
+
+        // Top RM Class which is constrainted in the archetype
+        cimi.setRMClassName(item_group);
 
         ADLArchetypeHelper helper = new ADLArchetypeHelper();
         ADLServices  adlServices = new ADL2ServicesImpl();
@@ -56,11 +66,7 @@ public class ADL2ServicesImplTest extends TestCase
         ADLArchetype dbGapArch = adlServices.createArchetype("dbGapTestArchetype", "This is a test", cimi, helper);
         assertNotNull(dbGapArch);
 
-        String item_group = "ITEM_GROUP";
-        String element = "ELEMENT";
-        String count = "COUNT";
-        String itemAtt = "item";
-        String valueAtt = "value";
+
 
         MultiplicityInterval occurrence11 = helper.createMultiplicityInterval(1, 1);
         MultiplicityInterval occurrence01 = helper.createMultiplicityInterval(0, 1);
