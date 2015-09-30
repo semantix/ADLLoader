@@ -2,8 +2,8 @@ package edu.mayo.samepage.adl.services;
 
 import org.apache.commons.lang.StringUtils;
 import org.openehr.jaxb.am.*;
-import org.openehr.jaxb.rm.*;
-import org.openehr.jaxb.rm.ObjectFactory;
+import org.opencimi.jaxb.rm.*;
+import org.opencimi.jaxb.rm.ObjectFactory;
 
 /**
  * Created by dks02 on 8/25/15.
