@@ -22,18 +22,23 @@ http://informatics.mayo.edu/maven
 <dependency>
             <groupId>org.openEHR.adl2core</groupId>
             <artifactId>adl-parser</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.1</version>
         </dependency>
         <dependency>
             <groupId>org.openEHR.adl2core</groupId>
             <artifactId>model-am</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.1</version>
         </dependency>
         <dependency>
             <groupId>org.openEHR.adl2core</groupId>
             <artifactId>model-rm</artifactId>
-            <version>1.0.0</version>
-</dependency> 
+            <version>1.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openEHR.adl2core</groupId>
+            <artifactId>CIMIRM</artifactId>
+            <version>1.0.1</version>
+        </dependency>
 ```
 * Add Following repository information in your POM:
 ```
