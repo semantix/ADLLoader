@@ -46,29 +46,56 @@
 
     <dependencies>
         <dependency>
+            <!-- This jar library is uploaded to Mayo Informatics Maven Repository
+            after compiling it using adl2-core project locally.  Since this project
+            was not suitable for including directly as it is not on any other public
+            maven repository and it did not work with jitpack.io mechanism
+            -->
             <groupId>org.openEHR.adl2core</groupId>
             <artifactId>adl-parser</artifactId>
-            <version>1.0.1</version>
+            <version>1.2.2</version>
         </dependency>
+        <!-- This jar library is uploaded to Mayo Informatics Maven Repository
+            after compiling it using adl2-core project locally.  Since this project
+            was not suitable for including directly as it is not on any other public
+            maven repository and it did not work with jitpack.io mechanism
+            -->
         <dependency>
             <groupId>org.openEHR.adl2core</groupId>
             <artifactId>model-am</artifactId>
-            <version>1.0.1</version>
+            <version>1.2.2</version>
         </dependency>
+        <!-- This jar library is uploaded to Mayo Informatics Maven Repository
+            after compiling it using adl2-core project locally.  Since this project
+            was not suitable for including directly as it is not on any other public
+            maven repository and it did not work with jitpack.io mechanism
+            -->
         <dependency>
             <groupId>org.openEHR.adl2core</groupId>
             <artifactId>model-rm</artifactId>
-            <version>1.0.1</version>
+            <version>1.2.2</version>
         </dependency>
+        <!-- This jar library is uploaded to Mayo Informatics Maven Repository
+            after compiling it using adl2-core project locally.  Since this project
+            was not suitable for including directly as it is not on any other public
+            maven repository and it did not work with jitpack.io mechanism
+            -->
+        <dependency>
+            <groupId>org.openEHR.adl2core</groupId>
+            <artifactId>model-rm-openehr</artifactId>
+            <version>1.2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openEHR.adl2core</groupId>
+            <artifactId>model-rm-opencimi</artifactId>
+            <version>1.2.2</version>
+        </dependency>
+        <!-- The project "basic" is on GitHub and being referenced using jitpack.io
+        mechanism -->
         <dependency>
             <groupId>com.github.semantix</groupId>
             <artifactId>basic</artifactId>
             <version>1.0.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.semantix</groupId>
-            <artifactId>CIMIRM</artifactId>
-            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
@@ -82,8 +109,8 @@
         </dependency>
         <dependency>
             <groupId>org.antlr</groupId>
-            <artifactId>antlr-runtime</artifactId>
-            <version>3.5.2</version>
+            <artifactId>antlr4-runtime</artifactId>
+            <version>4.5.1-1</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

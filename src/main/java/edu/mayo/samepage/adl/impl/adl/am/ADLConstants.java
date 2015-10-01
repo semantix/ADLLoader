@@ -1,15 +1,13 @@
-package edu.mayo.samepage.adl.impl.adl;
+package edu.mayo.samepage.adl.impl.adl.am;
 
 /**
  * Created by dks02 on 8/3/15.
  */
 public class ADLConstants
 {
-    // RM
-    public static String RM_RELEASE_VERSION = "3.0.3";
-    public static String RM_DEFAULT_PUBLISHER = "CIMI";
-    public static String RM_DEFAULT_PACKAGE = "CORE";
-    public static String RM_DEFAULT_CLASS = "ITEM-GROUP";
+    public static  String nsDelimiter_ = "::";
+    public static  String rmDelimiter_ = "-";
+    public static  String delimiter_ = ".";
 
     //ADL
     public static String ADL_DEFAULT_VERSION = "2.0";

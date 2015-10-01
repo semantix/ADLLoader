@@ -1,50 +1,98 @@
 package edu.mayo.samepage.adl.impl.adl;
 
-import edu.mayo.samepage.adl.IF.ADLParam;
+import edu.mayo.samepage.adl.impl.adl.am.ADLConstants;
+import edu.mayo.samepage.adl.impl.adl.am.ADLSettings;
+import edu.mayo.samepage.adl.impl.adl.rm.ADLRM;
+import edu.mayo.samepage.adl.impl.adl.rm.ADLRMSettings;
 import org.apache.commons.lang.StringUtils;
 import org.openehr.jaxb.rm.ArchetypeId;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by dks02 on 8/20/15.
  */
-public class ADLMetaData extends ADLMetaDataSettings
+public class ADLMetaData
 {
+    protected String idPrefix_ = "id";
+    protected String vsPrefix_ = "ac";
+    protected String pvPrefix_ = "at";
+
+    protected AtomicInteger idCounter = new AtomicInteger(0);
+    protected AtomicInteger vsCounter = new AtomicInteger(0);
+    protected AtomicInteger pvCounter = new AtomicInteger(0);
+
+    private ADLSettings adlSettings_ = new ADLSettings();
+    private ADLRMSettings rmSettings_ = new ADLRMSettings(ADLRM.OPENEHR);
+
+    public ADLMetaData(ADLSettings adlConfiguration,
+                       ADLRMSettings rmConfiguration)
+    {
+        if(adlConfiguration != null)
+            this.adlSettings_ = adlConfiguration;
+
+        if (rmConfiguration != null)
+            this.rmSettings_ = rmConfiguration;
+    }
+
+    public ADLSettings getADLSettings()
+    {
+        return this.adlSettings_;
+    }
+
+    public ADLRMSettings getADLRMSettings()
+    {
+        return this.rmSettings_;
+    }
+
+    public String createNewId()
+    {
+        return idPrefix_ + idCounter.incrementAndGet();
+    }
+    public String createNewValueSetId()
+    {
+        return vsPrefix_ + vsCounter.incrementAndGet();
+    }
+    public String createNewPermissibleValueId()
+    {
+        return pvPrefix_ + pvCounter.incrementAndGet();
+    }
+
     public ArchetypeId createArchetypeId(String archetypeName)
     {
         if (StringUtils.isEmpty(archetypeName))
             return null;
 
-        String nsPrefix = getString(ADLParam.ARCHETYPE_NAMESPACE, ADLConstants.ADL_DEFAULT_NS);
+        String nsPrefix = adlSettings_.getNameSpace();
 
         if (!StringUtils.isEmpty(nsPrefix))
-            nsPrefix += nsDelimiter_;
+            nsPrefix += ADLConstants.nsDelimiter_;
 
         String archIdPrefix =
                 nsPrefix +
-                        getString(ADLParam.RM_PUBLISHER, ADLConstants.RM_DEFAULT_PUBLISHER) +
-                        rmDelimiter_ +
-                        getString(ADLParam.RM_PACKAGE, ADLConstants.RM_DEFAULT_PACKAGE) +
-                        rmDelimiter_ +
-                        getString(ADLParam.RM_CLASS, ADLConstants.RM_DEFAULT_CLASS);
+                        rmSettings_.getRMPublisher() +
+                        ADLConstants.rmDelimiter_ +
+                        rmSettings_.getRMPackage() +
+                        ADLConstants.rmDelimiter_ +
+                        rmSettings_.getRMClassName();
 
         String archVersion = "v" +
-                getString(ADLParam.MAJOR_VERSION, ADLConstants.ARCH_DEFAULT_MAJOR_VERSION) +
-                delimiter_ +
-                getString(ADLParam.MINOR_VERSION, ADLConstants.ARCH_DEFAULT_MINOR_VERSION) +
-                delimiter_ +
-                getString(ADLParam.PATCH_VERSION, ADLConstants.ARCH_DEFAULT_PATCH_VERSION);
+                adlSettings_.getMajorVersion() +
+                ADLConstants.delimiter_ +
+                adlSettings_.getMinorVersion() +
+                ADLConstants.delimiter_ +
+                adlSettings_.getPatchVersion();
 
-        String status =  getString(ADLParam.VERSION_STATUS, ADLConstants.ARCH_DEFAULT_VERSION_STATUS);
+        String status =  adlSettings_.getVersionStatus();
         if (!StringUtils.isEmpty(status))
-            status = rmDelimiter_ + status;
+            status = ADLConstants.rmDelimiter_ + status;
 
-        String buildCount =  getString(ADLParam.BUILD_COUNT, ADLConstants.ARCH_DEFAULT_BUILD_COUNT);
+        String buildCount =  adlSettings_.getBuildCount();
         if (!StringUtils.isEmpty(buildCount))
-            buildCount = delimiter_ + buildCount;
-
+            buildCount = ADLConstants.delimiter_ + buildCount;
 
         ArchetypeId aid = new ArchetypeId();
-        aid.setValue(archIdPrefix + delimiter_ + archetypeName + delimiter_
+        aid.setValue(archIdPrefix + ADLConstants.delimiter_ + archetypeName + ADLConstants.delimiter_
                             + archVersion + status + buildCount);
 
         return aid;

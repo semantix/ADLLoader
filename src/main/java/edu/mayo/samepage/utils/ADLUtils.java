@@ -1,6 +1,10 @@
 package edu.mayo.samepage.utils;
 
 import edu.mayo.samepage.adl.impl.adl.ADLLoader;
+import edu.mayo.samepage.adl.impl.adl.ADLMetaData;
+import edu.mayo.samepage.adl.impl.adl.am.ADLSettings;
+import edu.mayo.samepage.adl.impl.adl.rm.ADLRM;
+import edu.mayo.samepage.adl.impl.adl.rm.ADLRMSettings;
 import org.openehr.adl.serializer.ArchetypeSerializer;
 import org.openehr.jaxb.am.*;
 import org.openehr.jaxb.rm.DvText;
@@ -18,6 +22,28 @@ public class ADLUtils
 {
     public static ObjectFactory of = new ObjectFactory();
     public static org.openehr.jaxb.rm.ObjectFactory ofrm = new org.openehr.jaxb.rm.ObjectFactory();
+
+    public static ADLMetaData initCIMIMetaData()
+    {
+        ADLSettings adlSettings = new ADLSettings();
+
+        ADLRMSettings adlrmSettings = new ADLRMSettings(ADLRM.OPENCIMI);
+
+        ADLMetaData cimi = new ADLMetaData(adlSettings, adlrmSettings);
+
+        cimi.setDefaultTerminologySetName("snomed-ct");
+
+        return cimi;
+    }
+
+    public static ADLMetaData initOpenEHRMetaData()
+    {
+        ADLSettings adlSettings = new ADLSettings();
+
+        ADLRMSettings adlrmSettings = new ADLRMSettings(ADLRM.OPENEHR);
+
+        return new ADLMetaData(adlSettings, adlrmSettings);
+    }
 
     public static String getArchetypeText(Archetype archetype)
     {

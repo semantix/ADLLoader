@@ -1,5 +1,6 @@
 package edu.mayo.samepage.adl.impl.adl;
 
+import edu.mayo.samepage.adl.impl.adl.am.ADLConstants;
 import org.apache.commons.lang.StringUtils;
 import org.openehr.jaxb.am.*;
 import org.openehr.jaxb.rm.*;
@@ -18,7 +19,7 @@ public class ADLArchetypeHelper
 
     public Archetype createArchetype()
     {
-        return of_.createDifferentialArchetype();
+        return of_.createArchetype();
     }
 
     public ArchetypeTerminology createArchetypeTerminology()

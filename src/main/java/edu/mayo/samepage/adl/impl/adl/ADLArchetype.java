@@ -1,5 +1,6 @@
 package edu.mayo.samepage.adl.impl.adl;
 
+import edu.mayo.samepage.adl.impl.adl.am.ADLConstants;
 import org.apache.commons.lang.StringUtils;
 import org.openehr.jaxb.am.*;
 import org.openehr.jaxb.rm.CodePhrase;
@@ -12,7 +13,7 @@ import org.openehr.jaxb.rm.StringDictionaryItem;
 public class ADLArchetype
 {
     private Archetype archetype_ = null;
-    private ADLMetaData meta_ = new ADLMetaData();
+    private ADLMetaData meta_ = null;
     private ADLArchetypeHelper helper_ = new ADLArchetypeHelper();
 
     public ADLArchetype(String name,
@@ -28,16 +29,16 @@ public class ADLArchetype
 
         archetype_ = helper_.createArchetype();
 
-        if (meta_.getParentID() != null)
-            archetype_.setParentArchetypeId(meta_.getParentID());
+        if (meta_.getADLSettings().getParentID() != null)
+            archetype_.setParentArchetypeId(meta_.getADLSettings().getParentID());
 
-        archetype_.setAdlVersion(meta_.getADLVersion());
-        archetype_.setRmRelease(meta_.getRMRelaseVersion());
-        archetype_.setIsGenerated(meta_.getIsGenerated());
+        archetype_.setAdlVersion(meta_.getADLSettings().getADLVersion());
+        archetype_.setRmRelease(meta_.getADLRMSettings().getRMRelaseVersion());
+        archetype_.setIsGenerated(meta_.getADLSettings().getIsGenerated());
 
         archetype_.setArchetypeId(meta_.createArchetypeId(name));
 
-        CodePhrase language = meta_.getOriginalLanguage();
+        CodePhrase language = meta_.getADLSettings().getOriginalLanguage();
         if (language == null)
             language = helper_.createCodePhrase(ADLConstants.ARCH_DEFAULT_LANGUAGE_CODE,
                                                 ADLConstants.ARCH_DEFAULT_LANGUAGE_VALUE);
@@ -45,15 +46,15 @@ public class ADLArchetype
         archetype_.setOriginalLanguage(language);
 
         ResourceDescription desc = helper_.createResourceDescription(
-                meta_.getCopyright(),
-                meta_.getLifeCycleState(),
-                meta_.getResourcePackageURI(),
+                meta_.getADLSettings().getCopyright(),
+                meta_.getADLSettings().getLifeCycleState(),
+                meta_.getADLSettings().getResourcePackageURI(),
                 null);
 
         archetype_.setDescription(desc);
 
         CComplexObject topConstraint =
-                helper_.createComplexObjectConstraint(meta_.getRMClassName(), meta_.createNewId(), null);
+                helper_.createComplexObjectConstraint(meta_.getADLRMSettings().getRMClassName(), meta_.createNewId(), null);
         setDefinition(topConstraint, name, description);
     }
 

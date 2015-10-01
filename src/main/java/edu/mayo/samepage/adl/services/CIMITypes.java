@@ -2,8 +2,8 @@ package edu.mayo.samepage.adl.services;
 
 import org.apache.commons.lang.StringUtils;
 import org.openehr.jaxb.am.*;
-import org.opencimi.jaxb.rm.*;
-import org.opencimi.jaxb.rm.ObjectFactory;
+import org.openehr.jaxb.rm.*;
+import org.openehr.jaxb.rm.ObjectFactory;
 
 /**
  * Created by dks02 on 8/25/15.
@@ -71,7 +71,7 @@ public class CIMITypes
     }
 
     public static CPrimitiveObject createPrimitiveTypeConstraints(CIMIPrimitiveTypes primitiveType,
-                                                                  Interval interval,
+                                                                  org.openehr.jaxb.rm.Interval interval,
                                                                   MultiplicityInterval occurrence)
     {
         if (primitiveType == null)
