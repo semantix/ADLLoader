@@ -3,7 +3,6 @@ package edu.mayo.samepage.adl.services;
 import ch.qos.logback.classic.Logger;
 import edu.mayo.samepage.adl.IF.ADLServices;
 import edu.mayo.samepage.adl.impl.adl.ADLArchetype;
-import edu.mayo.samepage.adl.impl.adl.ADLArchetypeHelper;
 import edu.mayo.samepage.adl.impl.adl.ADLMetaData;
 import org.openehr.adl.serializer.ArchetypeSerializer;
 import org.slf4j.LoggerFactory;
@@ -15,9 +14,9 @@ public class ADL2ServicesImpl implements ADLServices
 {
     final static Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ADL2ServicesImpl.class);
 
-    public ADLArchetype createArchetype(String name, String description, ADLMetaData metaData, ADLArchetypeHelper helper)
+    public ADLArchetype createArchetype(String name, String description, ADLMetaData metaData)
     {
-        return new ADLArchetype(name, description, metaData, helper);
+        return new ADLArchetype(name, description, metaData);
     }
 
     public String serialize(ADLArchetype archetype)

@@ -1,7 +1,6 @@
 package edu.mayo.samepage.adl.IF;
 
 import edu.mayo.samepage.adl.impl.adl.ADLArchetype;
-import edu.mayo.samepage.adl.impl.adl.ADLArchetypeHelper;
 import edu.mayo.samepage.adl.impl.adl.ADLMetaData;
 
 /**
@@ -9,6 +8,6 @@ import edu.mayo.samepage.adl.impl.adl.ADLMetaData;
  */
 public interface ADLServices
 {
-    public ADLArchetype createArchetype(String name, String description, ADLMetaData metaData, ADLArchetypeHelper helper);
+    public ADLArchetype createArchetype(String name, String description, ADLMetaData metaData);
     public String serialize(ADLArchetype archetype);
 }
