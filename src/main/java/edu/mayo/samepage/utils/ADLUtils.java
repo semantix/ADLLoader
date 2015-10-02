@@ -6,11 +6,8 @@ import edu.mayo.samepage.adl.impl.adl.am.ADLSettings;
 import edu.mayo.samepage.adl.impl.adl.rm.ADLRM;
 import edu.mayo.samepage.adl.impl.adl.rm.ADLRMSettings;
 import org.openehr.adl.serializer.ArchetypeSerializer;
-import org.openehr.jaxb.am.*;
-import org.openehr.jaxb.rm.DvText;
-import org.openehr.jaxb.rm.Element;
-import org.openehr.jaxb.rm.ItemSingle;
-import org.openehr.jaxb.rm.MultiplicityInterval;
+import org.openehr.jaxb.am.Archetype;
+import org.openehr.jaxb.am.ObjectFactory;
 
 import java.io.IOException;
 import java.net.URL;
@@ -71,51 +68,5 @@ public class ADLUtils
         }
 
         return null;
-    }
-
-    public static CComplexObject getTestDefinition()
-    {
-
-        CComplexObject cComplexObject = of.createCComplexObject();
-        ItemSingle isingle = ofrm.createItemSingle();
-
-        Element elm = ofrm.createElement();
-        DvText dvt = ofrm.createDvText();
-        dvt.setValue("Patient");
-        elm.setName(dvt);
-        isingle.setItem(elm);
-
-        cComplexObject.setRmTypeName("ITEM-GROUP");
-        cComplexObject.setNodeId("id1");
-
-
-        CAttribute item = of.createCAttribute();
-        item.setRmAttributeName("item");
-        MultiplicityInterval mult = ofrm.createMultiplicityInterval();
-        mult.setLower(0);
-        mult.setUpper(1);
-        item.setExistence(mult);
-        cComplexObject.getAttributes().add(item);
-
-        return cComplexObject;
-    }
-
-    public static ArchetypeTerminology getTestTerminology()
-    {
-        TermBindingSet tbs = of.createTermBindingSet();
-        tbs.setTerminology("snomed-ct");
-        TermBindingItem ti1 = of.createTermBindingItem();
-        ti1.setCode("id1");
-        ti1.setValue("testID1 value");
-        TermBindingItem ti2 = of.createTermBindingItem();
-        ti2.setCode("id2");
-        ti2.setValue("testID2 value");
-        tbs.getItems().add(ti1);
-        tbs.getItems().add(ti2);
-
-        ArchetypeTerminology aterm = of.createArchetypeTerminology();
-        aterm.getTermBindings().add(tbs);
-
-        return aterm;
     }
 }

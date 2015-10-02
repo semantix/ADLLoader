@@ -7,11 +7,17 @@ import edu.mayo.samepage.adl.impl.adl.rm.ADLRMFactory;
 import edu.mayo.samepage.adl.impl.adl.rm.ADLRMSettings;
 import edu.mayo.samepage.adl.services.ADL2ServicesImpl;
 import edu.mayo.samepage.adl.services.ADLTerminologyServices;
+import edu.mayo.samepage.adl.services.CIMIPrimitiveTypes;
 import junit.framework.TestCase;
 import org.junit.Test;
+import org.opencimi.adl.rm.OpenCimiRmModel;
+import org.openehr.adl.rm.RmObjectFactory;
 import org.openehr.adl.rm.RmType;
+import org.openehr.adl.rm.RmTypeAttribute;
 import org.openehr.jaxb.am.CComplexObject;
+import org.openehr.jaxb.am.CPrimitiveObject;
 import org.openehr.jaxb.am.Cardinality;
+import org.openehr.jaxb.rm.IntervalOfInteger;
 import org.openehr.jaxb.rm.MultiplicityInterval;
 
 /**
@@ -20,18 +26,21 @@ import org.openehr.jaxb.rm.MultiplicityInterval;
 public class ADL2ServicesImplTest extends TestCase
 {
     public String rmPackageName = "DBGAP";
-    public String item_group = "ITEM_GROUP";
 
-    private String element = "ELEMENT";
-    private String count = "COUNT";
-    private String itemAtt = "item";
-    private String valueAtt = "value";
+    public RmType ITEM_GROUP = null;
+    private RmType ELEMENT = null;
+    private RmType COUNT = null;
+
+    private RmTypeAttribute item = null;
+    private RmTypeAttribute value = null;
 
     private ADLMetaData cimiMetaData = null;
     private ADLServices adlServices_ = new ADL2ServicesImpl();
 
     private ADLAMConstraintFactory am_ = new ADLAMConstraintFactory();
     private ADLRMFactory rm_ = new ADLRMFactory();
+
+    private OpenCimiRmModel cimirm_ = OpenCimiRmModel.getInstance();
 
     private MultiplicityInterval occurrence11 = null;
     private MultiplicityInterval occurrence01 = null;
@@ -49,10 +58,27 @@ public class ADL2ServicesImplTest extends TestCase
     {
         super.setUp();
         ADLSettings adlSettings = new ADLSettings();
-
         ADLRMSettings adlrmSettings = new ADLRMSettings(ADLRM.OPENCIMI);
+
+        // Get Reference Model Classes
+        ITEM_GROUP = cimirm_.getRmType("ITEM_GROUP");
+        assertNotNull(ITEM_GROUP);
+
+        ELEMENT = cimirm_.getRmType("ELEMENT");
+        assertNotNull(ELEMENT);
+
+        COUNT = cimirm_.getRmType("COUNT");
+        assertNotNull(COUNT);
+
+        item = cimirm_.getRmAttribute(ITEM_GROUP.getRmType(), "item");
+        assertNotNull(item);
+
+        value = cimirm_.getRmAttribute(ELEMENT.getRmType(), "value");
+        assertNotNull(value);
+
         adlrmSettings.setRMPackage(rmPackageName);
-        adlrmSettings.setRMClassName(item_group);
+
+        adlrmSettings.setRMClassName(ITEM_GROUP.getRmType());
 
         cimiMetaData = new ADLMetaData(adlSettings, adlrmSettings);
         cimiMetaData.setDefaultTerminologySetName("snomed-ct");
@@ -111,8 +137,6 @@ public class ADL2ServicesImplTest extends TestCase
     @Test
     public void testIdentifierConstraint()
     {
-
-
         ADLArchetype dbGapArch = adlServices_.createArchetype("dbGapTestArchetype1",
                 "Test Archetype for Testing Identifier constraint",
                 cimiMetaData);
@@ -126,7 +150,7 @@ public class ADL2ServicesImplTest extends TestCase
         dbGapArch.addArchetypeTerm(cId, null, text, description, null, conceptReference);
         // ----------------------------------------------------------------------
 
-        CComplexObject c1 = am_.createComplexObjectConstraint(element, cId, occurrence11);
+        CComplexObject c1 = am_.createComplexObjectConstraint(ELEMENT, cId, occurrence1n);
 
         // ----------------------------------------------------------------------
         cId = cimiMetaData.createNewId();
@@ -136,11 +160,14 @@ public class ADL2ServicesImplTest extends TestCase
         dbGapArch.addArchetypeTerm(cId, null, text, description, null, conceptReference);
         // ----------------------------------------------------------------------
 
-        RmType targetType = rm_.openCIMIrm_.getRmType("IDENTIFIER");
-        CComplexObject c11 = am_.createComplexObjectConstraint(targetType.getRmType(), cId, occurrence11);
-        am_.addAttributeConstraints(c1, valueAtt, null, null, c11);
+        RmType IDENTIFIER = cimirm_.getRmType("IDENTIFIER");
+        assertNotNull(IDENTIFIER);
 
-        am_.addAttributeConstraints(dbGapArch.getDefinition(), itemAtt, null, null, c1);
+        CComplexObject c11 = am_.createComplexObjectConstraint(IDENTIFIER, cId, null);
+
+        am_.addAttributeConstraints(c1, value, null, null, c11);
+
+        am_.addAttributeConstraints(dbGapArch.getDefinition(), item, null, null, c1);
 
         // ----------------------------------------------------------------------
         // Serialize the Archetype into ADL 2.0 text rendering
@@ -159,27 +186,20 @@ public class ADL2ServicesImplTest extends TestCase
 
         // ----------------------------------------------------------------------
         String cId = cimiMetaData.createNewId(); // creates next id
-        String text = "SUBJID";
-        String description = "Subject Identification";
+        String text = "Age";
+        String description = "Age Range";
         String conceptReference = ADLTerminologyServices.getConceptReference(cId);
         dbGapArch.addArchetypeTerm(cId, null, text, description, null, conceptReference);
         // ----------------------------------------------------------------------
 
-        CComplexObject c1 = am_.createComplexObjectConstraint(element, cId, occurrence11);
+        CComplexObject c1 = am_.createComplexObjectConstraint(ELEMENT, cId, occurrence11);
 
-        // ----------------------------------------------------------------------
-        cId = cimiMetaData.createNewId();
-        text = "IDENTIFIER";
-        description = "RM TYPE IDENTIFIER";
-        conceptReference = ADLTerminologyServices.getConceptReference(cId);
-        dbGapArch.addArchetypeTerm(cId, null, text, description, null, conceptReference);
-        // ----------------------------------------------------------------------
+        IntervalOfInteger intervalOfInteger = RmObjectFactory.newIntervalOfInteger(33, 90);
+        CPrimitiveObject intervalConstraint = am_.createIntervalConstraint(CIMIPrimitiveTypes.INTEGER, intervalOfInteger, null);
 
-        RmType targetType = rm_.openCIMIrm_.getRmType("IDENTIFIER");
-        CComplexObject c11 = am_.createComplexObjectConstraint(targetType.getRmType(), cId, occurrence11);
-        am_.addAttributeConstraints(c1, valueAtt, null, null, c11);
+        am_.addAttributeConstraints(c1, value, null, null, intervalConstraint);
 
-        am_.addAttributeConstraints(dbGapArch.getDefinition(), itemAtt, null, null, c1);
+        am_.addAttributeConstraints(dbGapArch.getDefinition(), item, null, null, c1);
 
         // ----------------------------------------------------------------------
         // Serialize the Archetype into ADL 2.0 text rendering

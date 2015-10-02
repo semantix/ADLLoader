@@ -2,6 +2,7 @@ package edu.mayo.samepage.adl.impl.adl;
 
 import edu.mayo.samepage.adl.impl.adl.am.ADLConstants;
 import edu.mayo.samepage.adl.impl.adl.rm.ADLRMFactory;
+import edu.mayo.samepage.adl.services.CIMIPrimitiveTypes;
 import org.apache.commons.lang.StringUtils;
 import org.openehr.jaxb.am.*;
 import org.openehr.jaxb.rm.MultiplicityInterval;
@@ -104,5 +105,24 @@ public class ADLAMFactory
             valueSetItem.getMembers().add(member);
 
         return valueSetItem;
+    }
+
+    public CPrimitiveObject getPrimitiveType(CIMIPrimitiveTypes type)
+    {
+        if (type == null)
+            return null;
+
+        switch (type)
+        {
+            case INTEGER: return amFactory_.createCInteger();
+            case REAL: return amFactory_.createCReal();
+            case STRING: return amFactory_.createCString();
+            case BOOLEAN: return amFactory_.createCBoolean();
+            case DATE: return amFactory_.createCDate();
+            case TIME: return amFactory_.createCTime();
+            case DATETIME: return amFactory_.createCDateTime();
+            case DURATION: return amFactory_.createCDuration();
+            default: return amFactory_.createCPrimitiveObject();
+        }
     }
 }

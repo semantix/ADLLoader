@@ -2,14 +2,22 @@ package edu.mayo.samepage.adl.impl.adl.rm;
 
 import edu.mayo.samepage.adl.IF.ADLParam;
 import edu.mayo.samepage.adl.impl.adl.am.Settings;
+import org.apache.commons.lang.StringUtils;
+import org.opencimi.adl.rm.OpenCimiRmModel;
+import org.openehr.adl.rm.OpenEhrRmModel;
+import org.openehr.adl.rm.RmType;
 
 /**
  * Created by dks02 on 10/1/15.
  */
 public class ADLRMSettings extends Settings
 {
+    public ADLRM rmType = ADLRM.OPENCIMI;
+
     public ADLRMSettings(ADLRM rm)
     {
+        rmType = rm;
+
         switch (rm)
         {
             case OPENCIMI:
@@ -56,6 +64,7 @@ public class ADLRMSettings extends Settings
     {
         setValue(ADLParam.RM_RELEASE, rmVersion);
     }
+
     public String getRMClassName()
     {
         return getString(ADLParam.RM_CLASS, ADLRMConstants.OpenEHRRM_DEFAULT_CLASS);
@@ -64,5 +73,16 @@ public class ADLRMSettings extends Settings
     public void setRMClassName(String rmClassName)
     {
         setValue(ADLParam.RM_CLASS, rmClassName);
+    }
+
+    public RmType getRMType(String name)
+    {
+        if (StringUtils.isEmpty(name))
+            return null;
+
+        if (rmType == ADLRM.OPENCIMI)
+            return OpenCimiRmModel.getInstance().getRmType(name);
+
+        return OpenEhrRmModel.getInstance().getRmType(name);
     }
 }

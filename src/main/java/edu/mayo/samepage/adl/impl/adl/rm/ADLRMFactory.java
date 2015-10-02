@@ -1,7 +1,6 @@
 package edu.mayo.samepage.adl.impl.adl.rm;
 
 import org.apache.commons.lang.StringUtils;
-import org.opencimi.adl.rm.OpenCimiRmModel;
 import org.openehr.adl.rm.RmObjectFactory;
 import org.openehr.jaxb.rm.*;
 
@@ -11,7 +10,6 @@ import org.openehr.jaxb.rm.*;
 public class ADLRMFactory extends RmObjectFactory
 {
     public ObjectFactory openEHRrm_ = new ObjectFactory();
-    public OpenCimiRmModel openCIMIrm_ = OpenCimiRmModel.getInstance();
 
     // TERMINOLOGY_ID
     public TerminologyId createTerminologyId(String value)

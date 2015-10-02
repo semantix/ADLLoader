@@ -1,11 +1,11 @@
 package edu.mayo.samepage.adl.impl.adl;
 
+import edu.mayo.samepage.adl.services.CIMIPrimitiveTypes;
 import org.apache.commons.lang.StringUtils;
-import org.openehr.jaxb.am.CAttribute;
-import org.openehr.jaxb.am.CComplexObject;
-import org.openehr.jaxb.am.CObject;
-import org.openehr.jaxb.am.Cardinality;
-import org.openehr.jaxb.rm.MultiplicityInterval;
+import org.openehr.adl.rm.RmType;
+import org.openehr.adl.rm.RmTypeAttribute;
+import org.openehr.jaxb.am.*;
+import org.openehr.jaxb.rm.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,13 +15,62 @@ import java.util.List;
  */
 public class ADLAMConstraintFactory extends ADLAMFactory
 {
+    public CPrimitiveObject createIntervalConstraint(CIMIPrimitiveTypes primitiveType,
+                                                      org.openehr.jaxb.rm.Interval interval,
+                                                      MultiplicityInterval occurrence)
+    {
+        if (primitiveType == null)
+            return null;
+
+        CPrimitiveObject primitiveObject = getPrimitiveType(CIMIPrimitiveTypes.INTEGER);
+
+        switch (primitiveType)
+        {
+            case INTEGER:
+                CInteger cInteger = (CInteger) primitiveObject;
+                if ((interval != null) && (interval instanceof IntervalOfInteger))
+                    cInteger.setRange((IntervalOfInteger) interval);
+                return cInteger;
+            case REAL:
+                CReal cReal = (CReal) primitiveObject;
+                if ((interval != null) && (interval instanceof IntervalOfReal))
+                    cReal.setRange((IntervalOfReal) interval);
+                return cReal;
+            case DATE:
+                CDate cDate = (CDate) primitiveObject;
+                if ((interval != null) && (interval instanceof IntervalOfDate))
+                    cDate.setRange((IntervalOfDate) interval);
+                return cDate;
+            case TIME:
+                CTime cTime = (CTime) primitiveObject;
+                if ((interval != null) && (interval instanceof IntervalOfTime))
+                    cTime.setRange((IntervalOfTime) interval);
+                return cTime;
+            case DATETIME:
+                CDateTime cDateTime = (CDateTime) primitiveObject;
+                if ((interval != null) && (interval instanceof IntervalOfTime))
+                    cDateTime.setRange((IntervalOfDateTime) interval);
+                return cDateTime;
+            case DURATION:
+                CDuration cDuration = (CDuration) primitiveObject;
+                if ((interval != null) && (interval instanceof IntervalOfDuration))
+                    cDuration.setRange((IntervalOfDuration) interval);
+                return cDuration;
+        }
+
+        if (occurrence != null)
+            primitiveObject.setOccurrences(occurrence);
+
+        return primitiveObject;
+    }
+
     // Attribute Constraints
-    private CAttribute createAttributeConstraint(String rmAttributeName,
+    private CAttribute createAttributeConstraint(RmTypeAttribute rmAttribute,
                                                  MultiplicityInterval existence,
                                                  Cardinality cardinality)
     {
         CAttribute attriuteConstraint = amFactory_.createCAttribute();
-        attriuteConstraint.setRmAttributeName(rmAttributeName);
+        attriuteConstraint.setRmAttributeName(rmAttribute.getAttributeName());
 
         if (existence != null)
             attriuteConstraint.setExistence(existence);
@@ -32,12 +81,12 @@ public class ADLAMConstraintFactory extends ADLAMFactory
         return attriuteConstraint;
     }
 
-    public CAttribute createAttributeConstraints(String rmAttributeName,
+    public CAttribute createAttributeConstraints(RmTypeAttribute rmAttribute,
                                                  MultiplicityInterval existence,
                                                  Cardinality cardinality,
                                                  List<CObject> match)
     {
-        CAttribute attriuteConstraint = createAttributeConstraint(rmAttributeName,
+        CAttribute attriuteConstraint = createAttributeConstraint(rmAttribute,
                 existence,
                 cardinality);
 
@@ -47,7 +96,7 @@ public class ADLAMConstraintFactory extends ADLAMFactory
     }
 
     public void addAttributeConstraints(CComplexObject container,
-                                        String attribute,
+                                        RmTypeAttribute attribute,
                                         MultiplicityInterval occurrence,
                                         Cardinality cardinality,
                                         CObject... contained)
@@ -60,7 +109,7 @@ public class ADLAMConstraintFactory extends ADLAMFactory
     }
 
     public void addAttributeConstraints(CComplexObject container,
-                                        String attribute,
+                                        RmTypeAttribute attribute,
                                         MultiplicityInterval occurrence,
                                         Cardinality cardinality,
                                         List<CObject> contained)
@@ -71,7 +120,7 @@ public class ADLAMConstraintFactory extends ADLAMFactory
         if (contained == null)
             return;
 
-        if (StringUtils.isEmpty(attribute))
+        if (attribute == null)
             return;
 
         CAttribute attConstraints = createAttributeConstraints(attribute, occurrence, cardinality, contained);
@@ -80,18 +129,18 @@ public class ADLAMConstraintFactory extends ADLAMFactory
             container.getAttributes().add(attConstraints);
     }
 
-    public CComplexObject createComplexObjectConstraint(String rmType,
+    public CComplexObject createComplexObjectConstraint(RmType rmType,
                                                         String id,
                                                         MultiplicityInterval occurrence)
     {
-        if (StringUtils.isEmpty(rmType))
+        if (rmType == null)
             return null;
 
         if (StringUtils.isEmpty(id))
             return null;
 
         CComplexObject cComplexObject = amFactory_.createCComplexObject();
-        cComplexObject.setRmTypeName(rmType);
+        cComplexObject.setRmTypeName(rmType.getRmType());
         cComplexObject.setNodeId(id);
 
         if (occurrence != null)

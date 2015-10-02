@@ -3,6 +3,7 @@ package edu.mayo.samepage.adl.impl.adl;
 import edu.mayo.samepage.adl.impl.adl.am.ADLConstants;
 import edu.mayo.samepage.adl.impl.adl.rm.ADLRMFactory;
 import org.apache.commons.lang.StringUtils;
+import org.openehr.adl.rm.RmType;
 import org.openehr.jaxb.am.*;
 import org.openehr.jaxb.rm.CodePhrase;
 import org.openehr.jaxb.rm.ResourceDescription;
@@ -53,8 +54,11 @@ public class ADLArchetype
 
         archetype_.setDescription(desc);
 
+        String topClass = meta_.getADLRMSettings().getRMClassName();
+        RmType topRMType = meta_.getADLRMSettings().getRMType(topClass);
+
         CComplexObject topConstraint =
-                am_.createComplexObjectConstraint(meta_.getADLRMSettings().getRMClassName(),
+                am_.createComplexObjectConstraint(topRMType,
                                                     meta_.createNewId(), null);
         setDefinition(topConstraint, name, description);
     }
