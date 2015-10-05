@@ -1,32 +1,25 @@
-archetype (adl_version=2.0; rm_release=3.0.4; generated)
-    CIMI-DBGAP-ITEM_GROUP.dbGapTestArchetype1.v1.0.0
+archetype (adl_version=2.0.5; rm_release=3.0.1; generated)
+    CIMI-Core-ITEM_GROUP.dbGapTestArchetype1.v0.0.1
 
 language
     original_language = <[ISO_639-1::en]>
-    
+
 description
-    copyright = <"Mayo Clinic">
     lifecycle_state = <"unmanaged">
+    copyright = <"Mayo Clinic">
 
 definition
-    ITEM_GROUP[id1] matches {    -- dbGapTestArchetype1
+    ITEM_GROUP[id1] matches {
         item matches {
-            ELEMENT[id2] occurrences matches {1..*} matches {    -- SUBJID
+            ELEMENT[id2] occurrences matches {1..*} matches {
                 value matches {
-                    IDENTIFIER[id3]     -- IDENTIFIER
+                    IDENTIFIER[id3] 
                 }
             }
         }
     }
 
 terminology
-    term_bindings = <
-        ["snomed-ct"] = <
-            ["id2"] = <"http://snomed.info/id2">
-            ["id3"] = <"http://snomed.info/id3">
-        
-        >
-    >
     term_definitions = <
         ["en"] = <
             ["id1"] = <
@@ -43,4 +36,9 @@ terminology
             >
         >
     >
-
+    term_bindings = <
+        ["snomed-ct"] = <
+            ["id2"] = <http://snomed.info/id2>
+            ["id3"] = <http://snomed.info/id3>
+        >
+    >

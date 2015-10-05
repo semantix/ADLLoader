@@ -1,20 +1,21 @@
-archetype (adl_version=2.0; rm_release=3.0.4; generated)
-    CIMI-DBGAP-ITEM_GROUP.dbGapTestArchetype3.v1.0.0
+archetype (adl_version=2.0.5; rm_release=3.0.4; generated)
+    CIMI-Core-ITEM_GROUP.dbGapTestArchetype3.v0.0.1
 
 language
     original_language = <[ISO_639-1::en]>
-    
+
 description
-    copyright = <"Mayo Clinic">
     lifecycle_state = <"unmanaged">
+    copyright = <"Mayo Clinic">
 
 definition
-    ITEM_GROUP[id1] matches {    -- dbGapTestArchetype3
+    ITEM_GROUP[id1] matches {   -- dbGapTestArchetype3
         item matches {
-            ELEMENT[id2] occurrences matches {0..1} matches {    -- site
+            ELEMENT[id2] occurrences matches {0..1} matches {   -- site
                 value matches {
                     CODED_TEXT[id3] occurrences matches {0..1} matches {
-                        code matches {[ac1::]}
+                        code matches {"ac1::*"}
+                        terminology_id matches {"ac1"}
                     }
                 }
             }
@@ -22,15 +23,6 @@ definition
     }
 
 terminology
-    term_bindings = <
-        ["snomed-ct"] = <
-            ["id2"] = <"http://snomed.info/id2">
-            ["ac1"] = <"http://snomed.info/ac1">
-            ["at1"] = <"http://snomed.info/at1">
-            ["at2"] = <"http://snomed.info/at2">
-        
-        >
-    >
     term_definitions = <
         ["en"] = <
             ["id1"] = <
@@ -55,10 +47,17 @@ terminology
             >
         >
     >
+    term_bindings = <
+        ["snomed-ct"] = <
+            ["id2"] = <http://snomed.info/id2>
+            ["ac1"] = <http://snomed.info/ac1>
+            ["at1"] = <http://snomed.info/at1>
+            ["at2"] = <http://snomed.info/at2>
+        >
+    >
     value_sets = <
         ["ac1"] = <
             id = <"ac1">
             members = <"at1", "at2">
         >
     >
-
