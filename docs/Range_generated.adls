@@ -1,0 +1,48 @@
+archetype (adl_version=2.0; rm_release=3.0.4; generated)
+    CIMI-DBGAP-ITEM_GROUP.dbGapTestArchetype2.v1.0.0
+
+language
+    original_language = <[ISO_639-1::en]>
+    
+description
+    copyright = <"Mayo Clinic">
+    lifecycle_state = <"unmanaged">
+
+definition
+    ITEM_GROUP[id1] matches {    -- dbGapTestArchetype2
+        item matches {
+            ELEMENT[id2] occurrences matches {1} matches {    -- Patient Age
+                value matches {
+                    COUNT[id3] occurrences matches {0..1} matches {    -- Age
+                        value matches {|33..90|}
+                    }
+                }
+            }
+        }
+    }
+
+terminology
+    term_bindings = <
+        ["snomed-ct"] = <
+            ["id2"] = <"http://snomed.info/id2">
+            ["id3"] = <"http://snomed.info/id3">
+        
+        >
+    >
+    term_definitions = <
+        ["en"] = <
+            ["id1"] = <
+                text = <"dbGapTestArchetype2">
+                description = <"Test Archetype for Testing Integer Range Constraint">
+            >
+            ["id2"] = <
+                text = <"Patient Age">
+                description = <"Patinet Age">
+            >
+            ["id3"] = <
+                text = <"Age">
+                description = <"Age Range">
+            >
+        >
+    >
+

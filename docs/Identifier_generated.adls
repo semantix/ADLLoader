@@ -1,0 +1,46 @@
+archetype (adl_version=2.0; rm_release=3.0.4; generated)
+    CIMI-DBGAP-ITEM_GROUP.dbGapTestArchetype1.v1.0.0
+
+language
+    original_language = <[ISO_639-1::en]>
+    
+description
+    copyright = <"Mayo Clinic">
+    lifecycle_state = <"unmanaged">
+
+definition
+    ITEM_GROUP[id1] matches {    -- dbGapTestArchetype1
+        item matches {
+            ELEMENT[id2] occurrences matches {1..*} matches {    -- SUBJID
+                value matches {
+                    IDENTIFIER[id3]     -- IDENTIFIER
+                }
+            }
+        }
+    }
+
+terminology
+    term_bindings = <
+        ["snomed-ct"] = <
+            ["id2"] = <"http://snomed.info/id2">
+            ["id3"] = <"http://snomed.info/id3">
+        
+        >
+    >
+    term_definitions = <
+        ["en"] = <
+            ["id1"] = <
+                text = <"dbGapTestArchetype1">
+                description = <"Test Archetype for Testing Identifier constraint">
+            >
+            ["id2"] = <
+                text = <"SUBJID">
+                description = <"Subject Identification">
+            >
+            ["id3"] = <
+                text = <"IDENTIFIER">
+                description = <"RM TYPE IDENTIFIER">
+            >
+        >
+    >
+

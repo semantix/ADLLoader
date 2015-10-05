@@ -1,0 +1,64 @@
+archetype (adl_version=2.0; rm_release=3.0.4; generated)
+    CIMI-DBGAP-ITEM_GROUP.dbGapTestArchetype3.v1.0.0
+
+language
+    original_language = <[ISO_639-1::en]>
+    
+description
+    copyright = <"Mayo Clinic">
+    lifecycle_state = <"unmanaged">
+
+definition
+    ITEM_GROUP[id1] matches {    -- dbGapTestArchetype3
+        item matches {
+            ELEMENT[id2] occurrences matches {0..1} matches {    -- site
+                value matches {
+                    CODED_TEXT[id3] occurrences matches {0..1} matches {
+                        code matches {[ac1::]}
+                    }
+                }
+            }
+        }
+    }
+
+terminology
+    term_bindings = <
+        ["snomed-ct"] = <
+            ["id2"] = <"http://snomed.info/id2">
+            ["ac1"] = <"http://snomed.info/ac1">
+            ["at1"] = <"http://snomed.info/at1">
+            ["at2"] = <"http://snomed.info/at2">
+        
+        >
+    >
+    term_definitions = <
+        ["en"] = <
+            ["id1"] = <
+                text = <"dbGapTestArchetype3">
+                description = <"Test Archetype for Testing Value Set Constraint">
+            >
+            ["id2"] = <
+                text = <"site">
+                description = <"Procedure Site">
+            >
+            ["ac1"] = <
+                text = <"primary sites">
+                description = <"primary sites description here">
+            >
+            ["at1"] = <
+                text = <"COLN">
+                description = <"colonic (includes appendix)">
+            >
+            ["at2"] = <
+                text = <"RECT">
+                description = <"Rectal">
+            >
+        >
+    >
+    value_sets = <
+        ["ac1"] = <
+            id = <"ac1">
+            members = <"at1", "at2">
+        >
+    >
+

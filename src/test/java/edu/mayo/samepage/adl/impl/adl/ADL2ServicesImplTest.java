@@ -195,18 +195,28 @@ public class ADL2ServicesImplTest extends TestCase
 
         // ----------------------------------------------------------------------
         String cId = cimiMetaData.createNewId(); // creates next id
-        String text = "Age";
-        String description = "Age Range";
+        String text = "Patient Age";
+        String description = "Patinet Age";
         String conceptReference = ADLTerminologyServices.getConceptReference(cId);
         dbGapArch.addArchetypeTerm(cId, null, text, description, null, conceptReference);
         // ----------------------------------------------------------------------
 
         CComplexObject c1 = am_.createComplexObjectConstraint(ELEMENT, cId, occurrence11);
 
+        cId = cimiMetaData.createNewId(); // creates next id
+        text = "Age";
+        description = "Age Range";
+        conceptReference = ADLTerminologyServices.getConceptReference(cId);
+        dbGapArch.addArchetypeTerm(cId, null, text, description, null, conceptReference);
+
+        CComplexObject c11 = am_.createComplexObjectConstraint(COUNT, cId, occurrence01);
+
         IntervalOfInteger intervalOfInteger = RmObjectFactory.newIntervalOfInteger(33, 90);
         CPrimitiveObject intervalConstraint = am_.createIntervalConstraint(CIMIPrimitiveTypes.INTEGER, intervalOfInteger, null);
 
-        am_.addAttributeConstraints(c1, value, null, null, intervalConstraint);
+        am_.addAttributeConstraints(c11, value, null, null, intervalConstraint);
+
+        am_.addAttributeConstraints(c1, value, null, null, c11);
 
         am_.addAttributeConstraints(dbGapArch.getDefinition(), item, null, null, c1);
 
