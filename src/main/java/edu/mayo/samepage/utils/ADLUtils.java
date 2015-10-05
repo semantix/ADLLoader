@@ -5,6 +5,8 @@ import edu.mayo.samepage.adl.impl.adl.ADLMetaData;
 import edu.mayo.samepage.adl.impl.adl.am.ADLSettings;
 import edu.mayo.samepage.adl.impl.adl.rm.ADLRM;
 import edu.mayo.samepage.adl.impl.adl.rm.ADLRMSettings;
+import edu.mayo.samepage.adl.services.CIMIPrimitiveTypes;
+import org.apache.commons.lang.StringUtils;
 import org.openehr.adl.serializer.ArchetypeSerializer;
 import org.openehr.jaxb.am.Archetype;
 import org.openehr.jaxb.am.ObjectFactory;
@@ -68,5 +70,28 @@ public class ADLUtils
         }
 
         return null;
+    }
+
+    public static CIMIPrimitiveTypes getCIMIPrimitiveType(String typeName)
+    {
+        if (StringUtils.isEmpty(typeName))
+            return CIMIPrimitiveTypes.STRING;
+
+        if (typeName.toLowerCase().indexOf("integer") != -1)
+            return CIMIPrimitiveTypes.INTEGER;
+        if (typeName.toLowerCase().indexOf("real") != -1)
+            return CIMIPrimitiveTypes.REAL;
+        if (typeName.toLowerCase().indexOf("datetime") != -1)
+            return CIMIPrimitiveTypes.DATETIME;
+        if (typeName.toLowerCase().indexOf("time") != -1)
+            return CIMIPrimitiveTypes.TIME;
+        if (typeName.toLowerCase().indexOf("date") != -1)
+            return CIMIPrimitiveTypes.DATE;
+        if (typeName.toLowerCase().indexOf("duration") != -1)
+            return CIMIPrimitiveTypes.DURATION;
+        if (typeName.toLowerCase().indexOf("boolean") != -1)
+            return CIMIPrimitiveTypes.BOOLEAN;
+
+        return CIMIPrimitiveTypes.STRING;
     }
 }

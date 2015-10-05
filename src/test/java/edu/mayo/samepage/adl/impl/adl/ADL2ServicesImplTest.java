@@ -16,6 +16,7 @@ import org.openehr.adl.rm.RmType;
 import org.openehr.adl.rm.RmTypeAttribute;
 import org.openehr.jaxb.am.CComplexObject;
 import org.openehr.jaxb.am.CPrimitiveObject;
+import org.openehr.jaxb.am.CTerminologyCode;
 import org.openehr.jaxb.am.Cardinality;
 import org.openehr.jaxb.rm.IntervalOfInteger;
 import org.openehr.jaxb.rm.MultiplicityInterval;
@@ -29,10 +30,12 @@ public class ADL2ServicesImplTest extends TestCase
 
     public RmType ITEM_GROUP = null;
     private RmType ELEMENT = null;
+    private RmType CODEDTEXT = null;
     private RmType COUNT = null;
 
     private RmTypeAttribute item = null;
     private RmTypeAttribute value = null;
+    private RmTypeAttribute code = null;
 
     private ADLMetaData cimiMetaData = null;
     private ADLServices adlServices_ = new ADL2ServicesImpl();
@@ -67,6 +70,9 @@ public class ADL2ServicesImplTest extends TestCase
         ELEMENT = cimirm_.getRmType("ELEMENT");
         assertNotNull(ELEMENT);
 
+        CODEDTEXT = cimirm_.getRmType("CODED_TEXT");
+        assertNotNull(CODEDTEXT);
+
         COUNT = cimirm_.getRmType("COUNT");
         assertNotNull(COUNT);
 
@@ -75,6 +81,9 @@ public class ADL2ServicesImplTest extends TestCase
 
         value = cimirm_.getRmAttribute(ELEMENT.getRmType(), "value");
         assertNotNull(value);
+
+        code = cimirm_.getRmAttribute(CODEDTEXT.getRmType(), "code");
+        assertNotNull(code);
 
         adlrmSettings.setRMPackage(rmPackageName);
 
@@ -208,105 +217,63 @@ public class ADL2ServicesImplTest extends TestCase
         assertNotNull(dbGapArchTxt);
     }
 
-//        // ############ Constraint 2 #########################
-//        // Constraint referencing to a value set - encoded values
-//        //
-//        // ELEMENT[id3] occurrences matches {0..1} matches
-//        //
-//        CComplexObject c2 = helper.createComplexObjectConstraint(element, cId, occurrence01);
-//        dbGapArch.addArchetypeTerm(cId, null, text, description, null, conceptReference);
-//
-//        // Value Set and its entries
-//        String vsId = cimiMetaData.createNewValueSetId(); // creates first value set id
-//        String vsDef = "primary sites";
-//        String vsDesc = "primary sites description here";
-//        String vsConRef = ADLTerminologyServices.getConceptReference(vsId);
-//        //
-//        //  ["ac1"] = <
-//        //      text = <"primary sites">
-//        //      description = <"xxx">
-//        //  >
-//        //
-//        dbGapArch.addArchetypeTerm(vsId, null, vsDef, vsDesc, null, vsConRef);
-//
-//        String pvId1 = cimiMetaData.createNewPermissibleValueId();
-//        String pv1Def = "COLN";
-//        String pv1Desc = "colonic (includes appendix)";
-//        String pv1ConRef = ADLTerminologyServices.getConceptReference(pvId1);
-//        //
-//        //        "at4"] = <
-//        //        text = <"COLN">
-//        //            description = <"Colonic (includes appendix)">
-//        //        >
-//        //
-//        dbGapArch.addArchetypeTerm(pvId1, null, pv1Def, pv1Desc, null, pv1ConRef);
-//
-//        String pvId2 = cimiMetaData.createNewPermissibleValueId();
-//        String pv2Def = "RECT";
-//        String pv2Desc = "Rectal";
-//        String pv2ConRef = ADLTerminologyServices.getConceptReference(pvId2);
-//        //
-//        //        ["at5"] = <
-//        //        text = <"RECT">
-//        //            description = <"Rectal">
-//        //        >
-//        //
-//        dbGapArch.addArchetypeTerm(pvId2, null, pv2Def, pv2Desc, null, pv2ConRef);
-//
-//        // Creates Value-Set entries
-//        //
-//        //  value_sets = <
-//        //      ["ac1"] = <
-//        //      id = <"ac1">
-//        //          members = <"at4", "at5">
-//        //          >
-//        //
-//        dbGapArch.updateValueSet(vsId, pvId1, pvId2);
-//        CTerminologyCode terminologyCode = CIMITypes.getTerminologyConstraint(vsId, null);
-//
-//        if (terminologyCode != null)
-//            helper.addAttributeConstraints(c2, valueAtt, null, null, terminologyCode);
-//
-//        // ----------------------------------------------------------------------
-//        cId = cimiMetaData.createNewId();
-//        text = "Age";
-//        description = "Age at the time the specimen was taken";
-//        conceptReference = ADLTerminologyServices.getConceptReference(cId);
-//
-//        // ############ Constraint 3 #########################
-//        // Constraint with integer interval
-//        CComplexObject c3 = helper.createComplexObjectConstraint(element, cId, occurrence01);
-//        dbGapArch.addArchetypeTerm(cId, null, text, description, null, conceptReference);
-//
-//        cId = cimiMetaData.createNewId();
-//        text = "Age Interval";
-//        description = "Valid age Interval";
-//        conceptReference = ADLTerminologyServices.getConceptReference(cId);
-//
-//        CComplexObject c31 = helper.createComplexObjectConstraint(count, cId, occurrence01);
-//        dbGapArch.addArchetypeTerm(cId, null, text, description, null, conceptReference);
-//
-//        helper.addAttributeConstraints(c3, valueAtt, null, null, c31);
-//
-//        IntervalOfInteger intervalOfInteger = (IntervalOfInteger) CIMITypes.getIntervalFor(CIMIPrimitiveTypes.INTEGER);
-//        intervalOfInteger.setLower(33);
-//        intervalOfInteger.setUpper(90);
-//        intervalOfInteger.setLowerIncluded(Boolean.TRUE);
-//        intervalOfInteger.setUpperIncluded(Boolean.TRUE);
-//
-//        CPrimitiveObject primitiveObject = CIMITypes.createPrimitiveTypeConstraints(CIMIPrimitiveTypes.INTEGER, intervalOfInteger, null);
-//        helper.addAttributeConstraints(c31, valueAtt, null, null, primitiveObject);
-//
-//        // ----------------------------------------------------------------------
-//        //
-//        // Finally add all constraints to the main definition of the archetype
-//        //
-//
-//        helper.addAttributeConstraints(dbGapArch.getDefinition(), itemAtt, null, null, c1, c2, c3);
-//
-//        // ----------------------------------------------------------------------
-//        // Serialize the Archetype into ADL 2.0 text rendering
-//        String dbGapArchTxt = adlServices.serialize(dbGapArch);
-//
-//        assertNotNull(dbGapArchTxt);
+    @Test
+    public void testValueSetConstraint()
+    {
+        ADLArchetype dbGapArch = adlServices_.createArchetype("dbGapTestArchetype3",
+                "Test Archetype for Testing Value Set Constraint",
+                cimiMetaData);
+        assertNotNull(dbGapArch);
+
+        String cId1 = cimiMetaData.createNewId(); // creates next id
+        String text = "site";
+        String description = "Procedure Site";
+        String conceptReference = ADLTerminologyServices.getConceptReference(cId1);
+        dbGapArch.addArchetypeTerm(cId1, null, text, description, null, conceptReference);
+
+        CComplexObject c1 = am_.createComplexObjectConstraint(ELEMENT, cId1, occurrence01);
+
+        // ----------------------------------------------------------------------
+        // Value Set and its entries
+        String vsId = cimiMetaData.createNewValueSetId(); // creates first value set id
+        String vsDef = "primary sites";
+        String vsDesc = "primary sites description here";
+        String vsConRef = ADLTerminologyServices.getConceptReference(vsId);
+        dbGapArch.addArchetypeTerm(vsId, null, vsDef, vsDesc, null, vsConRef);
+        // ----------------------------------------------------------------------
+
+        // Permissible Value 1
+        String pvId1 = cimiMetaData.createNewPermissibleValueId();
+        String pv1Def = "COLN";
+        String pv1Desc = "colonic (includes appendix)";
+        String pv1ConRef = ADLTerminologyServices.getConceptReference(pvId1);
+        dbGapArch.addArchetypeTerm(pvId1, null, pv1Def, pv1Desc, null, pv1ConRef);
+
+        // Permissible Value 2
+        String pvId2 = cimiMetaData.createNewPermissibleValueId();
+        String pv2Def = "RECT";
+        String pv2Desc = "Rectal";
+        String pv2ConRef = ADLTerminologyServices.getConceptReference(pvId2);
+        dbGapArch.addArchetypeTerm(pvId2, null, pv2Def, pv2Desc, null, pv2ConRef);
+
+        // Creates Value-Set entries, Associate permissible value into this value set
+        dbGapArch.updateValueSet(vsId, pvId1, pvId2);
+        CTerminologyCode terminologyCode = am_.getTerminologyConstraint(vsId, null);
+
+        String cId11 = cimiMetaData.createNewId(); // creates next id
+        CComplexObject c11 = am_.createComplexObjectConstraint(CODEDTEXT, cId11, occurrence01);
+
+        if (terminologyCode != null)
+            am_.addAttributeConstraints(c11, code, null, null, terminologyCode);
+
+        am_.addAttributeConstraints(c1, value, null, null, c11);
+
+        am_.addAttributeConstraints(dbGapArch.getDefinition(), item, null, null, c1);
+
+        // ----------------------------------------------------------------------
+        // Serialize the Archetype into ADL 2.0 text rendering
+        String dbGapArchTxt = adlServices_.serialize(dbGapArch);
+
+        assertNotNull(dbGapArchTxt);
+    }
 }
