@@ -14,9 +14,9 @@ public class ADLConstants
     public static String ADL_DEFAULT_NS = "";
 
     // ARCH VERSION DEFAULTS
-    public static String ARCH_DEFAULT_MAJOR_VERSION = "1";
+    public static String ARCH_DEFAULT_MAJOR_VERSION = "0";
     public static String ARCH_DEFAULT_MINOR_VERSION = "0";
-    public static String ARCH_DEFAULT_PATCH_VERSION = "0";
+    public static String ARCH_DEFAULT_PATCH_VERSION = "1";
     public static String ARCH_DEFAULT_VERSION_STATUS = "";
     public static String ARCH_DEFAULT_BUILD_COUNT = "";
 

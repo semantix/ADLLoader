@@ -22,7 +22,7 @@ public class ADLAMConstraintFactory extends ADLAMFactory
         if (primitiveType == null)
             return null;
 
-        CPrimitiveObject primitiveObject = getPrimitiveType(CIMIPrimitiveTypes.INTEGER);
+        CPrimitiveObject primitiveObject = getPrimitiveType(CIMIPrimitiveTypes.STRING);
 
         switch (primitiveType)
         {

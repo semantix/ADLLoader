@@ -14,10 +14,7 @@ import org.opencimi.adl.rm.OpenCimiRmModel;
 import org.openehr.adl.rm.RmObjectFactory;
 import org.openehr.adl.rm.RmType;
 import org.openehr.adl.rm.RmTypeAttribute;
-import org.openehr.jaxb.am.CComplexObject;
-import org.openehr.jaxb.am.CPrimitiveObject;
-import org.openehr.jaxb.am.CTerminologyCode;
-import org.openehr.jaxb.am.Cardinality;
+import org.openehr.jaxb.am.*;
 import org.openehr.jaxb.rm.IntervalOfInteger;
 import org.openehr.jaxb.rm.MultiplicityInterval;
 
@@ -36,6 +33,7 @@ public class ADL2ServicesImplTest extends TestCase
     private RmTypeAttribute item = null;
     private RmTypeAttribute value = null;
     private RmTypeAttribute code = null;
+    private RmTypeAttribute terminologyId = null;
 
     private ADLMetaData cimiMetaData = null;
     private ADLServices adlServices_ = new ADL2ServicesImpl();
@@ -83,6 +81,9 @@ public class ADL2ServicesImplTest extends TestCase
         assertNotNull(value);
 
         code = cimirm_.getRmAttribute(CODEDTEXT.getRmType(), "code");
+        assertNotNull(code);
+
+        terminologyId = cimirm_.getRmAttribute(CODEDTEXT.getRmType(), "terminology_id");
         assertNotNull(code);
 
         adlrmSettings.setRMPackage(rmPackageName);
@@ -266,15 +267,29 @@ public class ADL2ServicesImplTest extends TestCase
         String pv2ConRef = ADLTerminologyServices.getConceptReference(pvId2);
         dbGapArch.addArchetypeTerm(pvId2, null, pv2Def, pv2Desc, null, pv2ConRef);
 
+        String [] members = null;
+        //members = new String[]{"at1", "at2"};
         // Creates Value-Set entries, Associate permissible value into this value set
         dbGapArch.updateValueSet(vsId, pvId1, pvId2);
-        CTerminologyCode terminologyCode = am_.getTerminologyConstraint(vsId, null);
+        CTerminologyCode terminologyCode = am_.getTerminologyConstraint(vsId, members);
 
         String cId11 = cimiMetaData.createNewId(); // creates next id
         CComplexObject c11 = am_.createComplexObjectConstraint(CODEDTEXT, cId11, occurrence01);
 
         if (terminologyCode != null)
-            am_.addAttributeConstraints(c11, code, null, null, terminologyCode);
+        {
+            if (members != null)
+                am_.addAttributeConstraints(c11, code, null, null, terminologyCode);
+            else
+            {
+
+                CString stringValue = (CString) am_.getPrimitiveType(CIMIPrimitiveTypes.STRING);
+                stringValue.setAssumedValue("*");
+
+                am_.addAttributeConstraints(c11, terminologyId, null, null, terminologyCode);
+                am_.addAttributeConstraints(c11, code, null, null, stringValue);
+            }
+        }
 
         am_.addAttributeConstraints(c1, value, null, null, c11);
 
