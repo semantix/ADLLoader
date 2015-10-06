@@ -14,7 +14,7 @@ definition
             ELEMENT[id2] occurrences matches {0..1} matches {    -- site
                 value matches {
                     CODED_TEXT[id3] occurrences matches {0..1} matches {
-                        code matches {[ac1::]}
+                        code matches {[ac1]}
                     }
                 }
             }
@@ -24,10 +24,10 @@ definition
 terminology
     term_bindings = <
         ["snomed-ct"] = <
-            ["id2"] = <"http://snomed.info/id2">
-            ["ac1"] = <"http://snomed.info/ac1">
-            ["at1"] = <"http://snomed.info/at1">
-            ["at2"] = <"http://snomed.info/at2">
+            ["id2"] = <http://snomed.info/id2>
+            ["ac1"] = <http://snomed.info/ac1>
+            ["at1"] = <http://snomed.info/at1>
+            ["at2"] = <http://snomed.info/at2>
         
         >
     >

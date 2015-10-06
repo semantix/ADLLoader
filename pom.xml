@@ -46,50 +46,71 @@
 
     <dependencies>
         <dependency>
-            <!-- This jar library is uploaded to Mayo Informatics Maven Repository
-            after compiling it using adl2-core project locally.  Since this project
-            was not suitable for including directly as it is not on any other public
-            maven repository and it did not work with jitpack.io mechanism
+            <!-- 10/6/2015: coming from https://repo1.maven.org/maven2/
+            Maven central repository where openehr has uploaded their libraries
+
+            This library is uploaded to Mayo Informatics Maven Repository
+            available at "3rd party" repository. org.openEHR.adl2core/adl-parser/1.2.3.
+            To access it from Mayo's maven repository, uncomment repositories in "repositories"
+            section below.
             -->
-            <groupId>org.openEHR.adl2core</groupId>
+            <groupId>org.openehr.adl2-core</groupId>
             <artifactId>adl-parser</artifactId>
             <version>1.2.2</version>
         </dependency>
-        <!-- This jar library is uploaded to Mayo Informatics Maven Repository
-            after compiling it using adl2-core project locally.  Since this project
-            was not suitable for including directly as it is not on any other public
-            maven repository and it did not work with jitpack.io mechanism
+        <!-- 10/6/2015: coming from https://repo1.maven.org/maven2/
+            Maven central repository where openehr has uploaded their libraries
+
+            This library is uploaded to Mayo Informatics Maven Repository
+            available at "3rd party" repository. org.openEHR.adl2core/model-am/1.2.3.
+            To access it from Mayo's maven repository, uncomment repositories in "repositories"
+            section below.
             -->
         <dependency>
-            <groupId>org.openEHR.adl2core</groupId>
+            <groupId>org.openehr.adl2-core</groupId>
             <artifactId>model-am</artifactId>
             <version>1.2.2</version>
         </dependency>
-        <!-- This jar library is uploaded to Mayo Informatics Maven Repository
-            after compiling it using adl2-core project locally.  Since this project
-            was not suitable for including directly as it is not on any other public
-            maven repository and it did not work with jitpack.io mechanism
+        <!-- 10/6/2015: coming from https://repo1.maven.org/maven2/
+            Maven central repository where openehr has uploaded their libraries
+
+            This library is uploaded to Mayo Informatics Maven Repository
+            available at "3rd party" repository. org.openEHR.adl2core/model-rm/1.2.3.
+            To access it from Mayo's maven repository, uncomment repositories in "repositories"
+            section below.
             -->
         <dependency>
-            <groupId>org.openEHR.adl2core</groupId>
+            <groupId>org.openehr.adl2-core</groupId>
             <artifactId>model-rm</artifactId>
             <version>1.2.2</version>
         </dependency>
-        <!-- This jar library is uploaded to Mayo Informatics Maven Repository
-            after compiling it using adl2-core project locally.  Since this project
-            was not suitable for including directly as it is not on any other public
-            maven repository and it did not work with jitpack.io mechanism
+        <!-- 10/6/2015: coming from https://repo1.maven.org/maven2/
+            Maven central repository where openehr has uploaded their libraries
+
+            This library is uploaded to Mayo Informatics Maven Repository
+            available at "3rd party" repository. org.openEHR.adl2core/model-rm-openehr/1.2.3.
+            To access it from Mayo's maven repository, uncomment repositories in "repositories"
+            section below.
             -->
-        <dependency>
-            <groupId>org.openEHR.adl2core</groupId>
+        <dependency>>
+            <groupId>org.openehr.adl2-core</groupId>
             <artifactId>model-rm-openehr</artifactId>
             <version>1.2.2</version>
         </dependency>
+
+        <!-- This library is uploaded to Mayo Informatics Maven Repository
+            available at "3rd party" repository. org.openEHR.adl2core/adl-parser/1.2.3.
+            To access it from Mayo's maven repository, uncomment repositories in "repositories"
+            section below.
+
+            Project is at https://github.com/semantix/model-rm-opencimi
+            -->
         <dependency>
             <groupId>org.openEHR.adl2core</groupId>
             <artifactId>model-rm-opencimi</artifactId>
             <version>1.2.2</version>
         </dependency>
+
         <!-- The project "basic" is on GitHub and being referenced using jitpack.io
         mechanism -->
         <dependency>

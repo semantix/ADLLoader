@@ -22,8 +22,8 @@ definition
 terminology
     term_bindings = <
         ["snomed-ct"] = <
-            ["id2"] = <"http://snomed.info/id2">
-            ["id3"] = <"http://snomed.info/id3">
+            ["id2"] = <http://snomed.info/id2>
+            ["id3"] = <http://snomed.info/id3>
         
         >
     >
@@ -43,4 +43,3 @@ terminology
             >
         >
     >
-
