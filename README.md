@@ -20,27 +20,28 @@ http://informatics.mayo.edu/maven
 * To use the libararies directory (without this project ADLWorks), please add the following dependencies in your maven environment:
 ```
 <dependency>
-            <groupId>org.openEHR.adl2core</groupId>
+            <groupId>org.openehr.adl2-core</groupId>
             <artifactId>adl-parser</artifactId>
-            <version>1.0.1</version>
+            <version>1.2.2</version>
         </dependency>
         <dependency>
-            <groupId>org.openEHR.adl2core</groupId>
+            <groupId>org.openehr.adl2-core</groupId>
             <artifactId>model-am</artifactId>
-            <version>1.0.1</version>
+            <version>1.2.2</version>
         </dependency>
         <dependency>
             <groupId>org.openEHR.adl2core</groupId>
             <artifactId>model-rm</artifactId>
-            <version>1.0.1</version>
+            <version>1.2.2</version>
         </dependency>
         <dependency>
             <groupId>org.openEHR.adl2core</groupId>
-            <artifactId>CIMIRM</artifactId>
-            <version>1.0.1</version>
+            <artifactId>model-rm-opencimi</artifactId>
+            <version>1.2.3</version>
         </dependency>
 ```
-* Add Following repository information in your POM:
+These libraries are availble from Maven Central https://repo1.maven.org/maven2/
+These libraries also available at Mayo Clinic Maven Repository
 ```
 <repository>
             <id>edu.informatics.maven.thirdparty</id>
