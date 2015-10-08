@@ -1,7 +1,7 @@
 package edu.mayo.samepage.adl.impl.adl.rm;
 
-import edu.mayo.samepage.adl.IF.ADLParam;
-import edu.mayo.samepage.adl.impl.adl.am.Settings;
+import edu.mayo.samepage.adl.impl.adl.env.ADLParam;
+import edu.mayo.samepage.adl.impl.adl.env.Settings;
 import org.apache.commons.lang.StringUtils;
 import org.opencimi.adl.rm.OpenCimiRmModel;
 import org.openehr.adl.rm.OpenEhrRmModel;
@@ -65,12 +65,12 @@ public class ADLRMSettings extends Settings
         setValue(ADLParam.RM_RELEASE, rmVersion);
     }
 
-    public String getRMClassName()
+    public String getTopRMClassName()
     {
-        return getString(ADLParam.RM_CLASS, ADLRMConstants.OpenEHRRM_DEFAULT_CLASS);
+        return getString(ADLParam.RM_CLASS, ADLRMConstants.OpenCIMIRM_DEFAULT_CLASS);
     }
 
-    public void setRMClassName(String rmClassName)
+    public void setTopRMClassName(String rmClassName)
     {
         setValue(ADLParam.RM_CLASS, rmClassName);
     }

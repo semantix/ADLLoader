@@ -1,6 +1,4 @@
-package edu.mayo.samepage.adl.impl.adl.am;
-
-import edu.mayo.samepage.adl.IF.ADLParam;
+package edu.mayo.samepage.adl.impl.adl.env;
 
 import java.util.Hashtable;
 

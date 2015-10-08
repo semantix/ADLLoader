@@ -1,33 +1,44 @@
 package edu.mayo.samepage.adl.impl.adl;
 
-import edu.mayo.samepage.adl.impl.adl.am.ADLConstants;
-import edu.mayo.samepage.adl.impl.adl.rm.ADLRMFactory;
+import ch.qos.logback.classic.Logger;
+import edu.mayo.samepage.adl.impl.adl.env.ADLConstants;
+import edu.mayo.samepage.adl.impl.adl.env.IDType;
+import edu.mayo.samepage.adl.services.ADLTerminologyServices;
 import org.apache.commons.lang.StringUtils;
-import org.openehr.adl.rm.RmType;
+import org.openehr.adl.serializer.ArchetypeSerializer;
 import org.openehr.jaxb.am.*;
 import org.openehr.jaxb.rm.CodePhrase;
 import org.openehr.jaxb.rm.ResourceDescription;
 import org.openehr.jaxb.rm.StringDictionaryItem;
+import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.openehr.adl.rm.RmObjectFactory.*;
+import static org.openehr.adl.am.AmObjectFactory.*;
 
 /**
  * Created by dks02 on 8/19/15.
  */
 public class ADLArchetype
 {
-    private ADLAMConstraintFactory am_ = new ADLAMConstraintFactory();
-    private ADLRMFactory rm_ = new ADLRMFactory();
+    final static Logger logger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(ADLArchetype.class);
+
+    private ADLArchetypeHelper helper_ = new ADLArchetypeHelper();
 
     private Archetype archetype_ = null;
     private ADLMetaData meta_ = null;
 
     public ADLArchetype(String name,
-                        String description,
                         ADLMetaData meta)
     {
         if (meta != null)
             meta_ = meta;
 
-        archetype_ = am_.createArchetype();
+        archetype_ = new Archetype();
+        archetype_.setArchetypeId(newArchetypeId(meta_.createArchetypeId(name)));
+        //archetype_.setIsDifferential(true);
 
         if (meta_.getADLSettings().getParentID() != null)
             archetype_.setParentArchetypeId(meta_.getADLSettings().getParentID());
@@ -36,31 +47,21 @@ public class ADLArchetype
         archetype_.setRmRelease(meta_.getADLRMSettings().getRMRelaseVersion());
         archetype_.setIsGenerated(meta_.getADLSettings().getIsGenerated());
 
-        archetype_.setArchetypeId(meta_.createArchetypeId(name));
-
         CodePhrase language = meta_.getADLSettings().getOriginalLanguage();
 
         if (language == null)
-            language = rm_.createCodePhrase(rm_.createTerminologyId(ADLConstants.ARCH_DEFAULT_LANGUAGE_VALUE),
-                                            ADLConstants.ARCH_DEFAULT_LANGUAGE_CODE);
+            language = newCodePhrase(newTerminologyId(ADLConstants.ARCH_DEFAULT_LANGUAGE_VALUE),
+                    ADLConstants.ARCH_DEFAULT_LANGUAGE_CODE);
 
         archetype_.setOriginalLanguage(language);
 
-        ResourceDescription desc = rm_.createResourceDescription(
+        ResourceDescription desc = helper_.createResourceDescription(
                 meta_.getADLSettings().getCopyright(),
                 meta_.getADLSettings().getLifeCycleState(),
                 meta_.getADLSettings().getResourcePackageURI(),
-                null);
+                null, null, null, null, null);
 
         archetype_.setDescription(desc);
-
-        String topClass = meta_.getADLRMSettings().getRMClassName();
-        RmType topRMType = meta_.getADLRMSettings().getRMType(topClass);
-
-        CComplexObject topConstraint =
-                am_.createComplexObjectConstraint(topRMType,
-                                                    meta_.createNewId(), null);
-        setDefinition(topConstraint, name, description);
     }
 
     public Archetype getArchetype()
@@ -68,51 +69,42 @@ public class ADLArchetype
         return this.archetype_;
     }
 
+    public String addNewId(IDType type, String name, String desc)
+    {
+        String id = meta_.createNewId(type);
+        String conceptReference = ADLTerminologyServices.getConceptReference(id);
+        addArchetypeTerm(id, null, name, desc, null, conceptReference);
+        return id;
+    }
+
+    public String serialize()
+    {
+        return ArchetypeSerializer.serialize(this.getArchetype());
+    }
+
     public ArchetypeTerminology getTerminology()
     {
         ArchetypeTerminology archetypeTerminology = archetype_.getTerminology();
         if (archetypeTerminology == null)
-            archetypeTerminology = am_.createArchetypeTerminology();
+            archetypeTerminology = new ArchetypeTerminology();
 
         return archetypeTerminology;
     }
 
-    public void setDefinition(CComplexObject definition, String definitionText, String descriptionText)
+    public CComplexObject getDefinition()
+    {
+        if (archetype_ == null)
+            return null;
+
+        return archetype_.getDefinition();
+    }
+
+    public void setDefinition(CComplexObject definition)
     {
         if (archetype_ == null)
             return;
 
         archetype_.setDefinition(definition);
-        addArchetypeTerm(definition.getNodeId(), null, definitionText, descriptionText, null, null);
-    }
-
-    public CComplexObject getDefinition()
-    {
-        return archetype_.getDefinition();
-    }
-
-
-
-    public void addToComplexObjectConstraint(CComplexObject constraint, CAttribute attribute)
-    {
-        if (constraint == null)
-            return;
-
-        if (attribute == null)
-            return;
-
-        constraint.getAttributes().add(attribute);
-    }
-
-    public void addToComplexObjectConstraint(CComplexObject constraint, CAttributeTuple attributeTuple)
-    {
-        if (constraint == null)
-            return;
-
-        if (attributeTuple == null)
-            return;
-
-        constraint.getAttributeTuples().add(attributeTuple);
     }
 
     public void addArchetypeTerm(String termId,
@@ -173,13 +165,13 @@ public class ADLArchetype
 
                 for (StringDictionaryItem dictionaryItem : term.getItems())
                 {
-                    if (am_.getTermDefinitionTextProperty().equals(dictionaryItem.getId()))
+                    if (getTermDefinitionTextProperty().equals(dictionaryItem.getId()))
                     {
                         dictionaryItem.setValue(definition);
                         added = true;
                     }
 
-                    if (am_.getTermDescriptionProperty().equals(dictionaryItem.getId()))
+                    if (getTermDescriptionProperty().equals(dictionaryItem.getId()))
                     {
                         dictionaryItem.setValue(description);
                         added = true;
@@ -189,17 +181,40 @@ public class ADLArchetype
 
             if (!added)
             {
-                set.getItems().add(am_.createArcehtypeTerm(tCode, definition, description));
+                set.getItems().add(createArcehtypeTerm(tCode, definition, description));
                 added = true;
             }
 
         }
 
-        if (!added) {
-            CodeDefinitionSet cds = am_.createCodeDefinitionSet(languageSet);
-            cds.getItems().add(am_.createArcehtypeTerm(tCode, definition, description));
+        if (!added)
+        {
+            List<ArchetypeTerm> terms1 = new ArrayList<ArchetypeTerm>();
+            terms1.add(createArcehtypeTerm(tCode, definition, description));
+
+            CodeDefinitionSet cds = newCodeDefinitionSet(languageSet, terms1);
+
             archetypeTerminology.getTermDefinitions().add(cds);
         }
+    }
+
+    public ArchetypeTerm createArcehtypeTerm(String code, String definition, String description)
+    {
+        ArchetypeTerm aT =  new ArchetypeTerm();
+        aT.setCode(code);
+
+        String def = definition;
+        if (StringUtils.isEmpty(definition))
+            def = "";
+
+        aT.getItems().add(newStringDictionaryItem(
+                getTermDefinitionTextProperty(), def));
+
+        if (!StringUtils.isEmpty(description))
+            aT.getItems().add(newStringDictionaryItem(
+                    getTermDescriptionProperty(), description));
+
+        return aT;
     }
 
     public void updateValueSet(String valueSetId, String... valueSetMembers)
@@ -228,7 +243,7 @@ public class ADLArchetype
 
         if (!added)
         {
-            ValueSetItem valueSetItem = am_.createValueSetItem(valueSetId, valueSetMembers);
+            ValueSetItem valueSetItem = helper_.createValueSetItem(valueSetId, valueSetMembers);
             if (valueSetItem != null)
                 archetypeTerminology.getValueSets().add(valueSetItem);
         }
@@ -268,7 +283,7 @@ public class ADLArchetype
 
             if (!added)
             {
-                TermBindingItem newItem = am_.createTermBindingItem(tCode, tBinding);
+                TermBindingItem newItem = newTermBindingItem(tCode, tBinding);
                 set.getItems().add(newItem);
                 added = true;
             }
@@ -276,9 +291,20 @@ public class ADLArchetype
 
         if (!added)
         {
-            TermBindingSet tbs = am_.createTermBindingSet(setName);
-            tbs.getItems().add(am_.createTermBindingItem(tCode, tBinding));
+            List<TermBindingItem> tbi = new ArrayList<TermBindingItem>();
+            tbi.add(newTermBindingItem(tCode, tBinding));
+            TermBindingSet tbs = newTermBindingSet(setName, tbi);
             archetypeTerminology.getTermBindings().add(tbs);
         }
+    }
+
+    public String getTermDefinitionTextProperty()
+    {
+        return ADLConstants.TERM_DEFINITION_TEXT_PROPERTY;
+    }
+
+    public String getTermDescriptionProperty()
+    {
+        return ADLConstants.TERM_DEFINITION_DESCRIPTION_PROPERTY;
     }
 }

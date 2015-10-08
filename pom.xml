@@ -44,6 +44,11 @@
         </developer>
     </developers>
 
+    <properties>
+        <adl2-core.version>1.2.2</adl2-core.version>
+        <cimi-rm.version>1.2.2</cimi-rm.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <!-- 10/6/2015: coming from https://repo1.maven.org/maven2/
@@ -56,20 +61,20 @@
             -->
             <groupId>org.openehr.adl2-core</groupId>
             <artifactId>adl-parser</artifactId>
-            <version>1.2.2</version>
+            <version>${adl2-core.version}</version>
         </dependency>
         <!-- 10/6/2015: coming from https://repo1.maven.org/maven2/
             Maven central repository where openehr has uploaded their libraries
 
             This library is uploaded to Mayo Informatics Maven Repository
-            available at "3rd party" repository. org.openEHR.adl2core/model-am/1.2.3.
+            available at "3rd party" repository. org.openEHR.adl2core/model-env/1.2.3.
             To access it from Mayo's maven repository, uncomment repositories in "repositories"
             section below.
             -->
         <dependency>
             <groupId>org.openehr.adl2-core</groupId>
             <artifactId>model-am</artifactId>
-            <version>1.2.2</version>
+            <version>1.3.0</version>
         </dependency>
         <!-- 10/6/2015: coming from https://repo1.maven.org/maven2/
             Maven central repository where openehr has uploaded their libraries
@@ -82,7 +87,7 @@
         <dependency>
             <groupId>org.openehr.adl2-core</groupId>
             <artifactId>model-rm</artifactId>
-            <version>1.2.2</version>
+            <version>${adl2-core.version}</version>
         </dependency>
         <!-- 10/6/2015: coming from https://repo1.maven.org/maven2/
             Maven central repository where openehr has uploaded their libraries
@@ -92,10 +97,10 @@
             To access it from Mayo's maven repository, uncomment repositories in "repositories"
             section below.
             -->
-        <dependency>>
+        <dependency>
             <groupId>org.openehr.adl2-core</groupId>
             <artifactId>model-rm-openehr</artifactId>
-            <version>1.2.2</version>
+            <version>${adl2-core.version}</version>
         </dependency>
 
         <!-- This library is uploaded to Mayo Informatics Maven Repository
@@ -108,7 +113,7 @@
         <dependency>
             <groupId>org.openEHR.adl2core</groupId>
             <artifactId>model-rm-opencimi</artifactId>
-            <version>1.2.2</version>
+            <version>${cimi-rm.version}</version>
         </dependency>
 
         <!-- The project "basic" is on GitHub and being referenced using jitpack.io

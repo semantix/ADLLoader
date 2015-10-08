@@ -1,11 +1,11 @@
 package edu.mayo.samepage.adl.impl.adl;
 
-import edu.mayo.samepage.adl.impl.adl.am.ADLConstants;
-import edu.mayo.samepage.adl.impl.adl.am.ADLSettings;
+import edu.mayo.samepage.adl.impl.adl.env.ADLConstants;
+import edu.mayo.samepage.adl.impl.adl.env.ADLSettings;
+import edu.mayo.samepage.adl.impl.adl.env.IDType;
 import edu.mayo.samepage.adl.impl.adl.rm.ADLRM;
 import edu.mayo.samepage.adl.impl.adl.rm.ADLRMSettings;
 import org.apache.commons.lang.StringUtils;
-import org.openehr.jaxb.rm.ArchetypeId;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -26,13 +26,16 @@ public class ADLMetaData
     private ADLRMSettings rmSettings_ = new ADLRMSettings(ADLRM.OPENEHR);
 
     public ADLMetaData(ADLSettings adlConfiguration,
-                       ADLRMSettings rmConfiguration)
+                       ADLRMSettings rmConfiguration,
+                       String RMClassName)
     {
         if(adlConfiguration != null)
             this.adlSettings_ = adlConfiguration;
 
         if (rmConfiguration != null)
             this.rmSettings_ = rmConfiguration;
+
+        rmSettings_.setTopRMClassName(RMClassName);
     }
 
     public ADLSettings getADLSettings()
@@ -45,21 +48,17 @@ public class ADLMetaData
         return this.rmSettings_;
     }
 
-    public String createNewId()
+    public String createNewId(IDType type)
     {
-        return idPrefix_ + idCounter.incrementAndGet();
+        switch(type)
+        {
+            case VALUESET: return vsPrefix_ + vsCounter.incrementAndGet();
+            case VALUESETMEMBER: return pvPrefix_ + pvCounter.incrementAndGet();
+            default: return idPrefix_ + idCounter.incrementAndGet();
+        }
     }
 
-    public String createNewValueSetId()
-    {
-        return vsPrefix_ + vsCounter.incrementAndGet();
-    }
-    public String createNewPermissibleValueId()
-    {
-        return pvPrefix_ + pvCounter.incrementAndGet();
-    }
-
-    public ArchetypeId createArchetypeId(String archetypeName)
+    public String createArchetypeId(String archetypeName)
     {
         if (StringUtils.isEmpty(archetypeName))
             return null;
@@ -75,7 +74,7 @@ public class ADLMetaData
                         ADLConstants.rmDelimiter_ +
                         rmSettings_.getRMPackage() +
                         ADLConstants.rmDelimiter_ +
-                        rmSettings_.getRMClassName();
+                        rmSettings_.getTopRMClassName();
 
         String archVersion = "v" +
                 adlSettings_.getMajorVersion() +
@@ -92,11 +91,9 @@ public class ADLMetaData
         if (!StringUtils.isEmpty(buildCount))
             buildCount = ADLConstants.delimiter_ + buildCount;
 
-        ArchetypeId aid = new ArchetypeId();
-        aid.setValue(archIdPrefix + ADLConstants.delimiter_ + archetypeName + ADLConstants.delimiter_
-                            + archVersion + status + buildCount);
 
-        return aid;
+        return archIdPrefix + ADLConstants.delimiter_ + archetypeName + ADLConstants.delimiter_
+                            + archVersion + status + buildCount;
     }
 
     public String getDefaultTerminologySetName()

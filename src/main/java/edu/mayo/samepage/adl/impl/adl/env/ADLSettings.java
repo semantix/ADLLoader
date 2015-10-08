@@ -1,6 +1,5 @@
-package edu.mayo.samepage.adl.impl.adl.am;
+package edu.mayo.samepage.adl.impl.adl.env;
 
-import edu.mayo.samepage.adl.IF.ADLParam;
 import org.openehr.jaxb.rm.ArchetypeId;
 import org.openehr.jaxb.rm.CodePhrase;
 
