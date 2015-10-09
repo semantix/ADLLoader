@@ -18,10 +18,12 @@ public class ADLLoaderTest
     public void testLoadFromFile() throws Exception
     {
         File startDir = new File(System.getProperty("user.dir"));
-        List<File> adlsFiles = LMFileUtils.getAllFiles(startDir.getCanonicalPath(), ".\\.adls");
-        
+        List<File> adlsFiles = LMFileUtils.getAllFiles(startDir.getCanonicalPath(), "CIMI.*\\.adls");
+
+        System.out.println("Testing " + adlsFiles.size() + " files from resources in the project...");
         for (File file : adlsFiles)
             assertNotNull(ADLLoader.loadFromFile(file));
+        System.out.println("Test load from files completed!");
     }
 
     @Test
