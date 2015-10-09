@@ -22,22 +22,22 @@ http://informatics.mayo.edu/maven
 <dependency>
             <groupId>org.openehr.adl2-core</groupId>
             <artifactId>adl-parser</artifactId>
-            <version>1.2.2</version>
+            <version>1.3.0</version>
         </dependency>
         <dependency>
             <groupId>org.openehr.adl2-core</groupId>
             <artifactId>model-am</artifactId>
-            <version>1.2.2</version>
+            <version>1.3.0</version>
         </dependency>
         <dependency>
             <groupId>org.openEHR.adl2core</groupId>
             <artifactId>model-rm</artifactId>
-            <version>1.2.2</version>
+            <version>1.3.0</version>
         </dependency>
         <dependency>
             <groupId>org.openEHR.adl2core</groupId>
             <artifactId>model-rm-opencimi</artifactId>
-            <version>1.2.3</version>
+            <version>1.2.2</version>
         </dependency>
 ```
 These libraries are availble from Maven Central https://repo1.maven.org/maven2/
