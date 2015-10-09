@@ -14,10 +14,10 @@ import org.openehr.jaxb.am.CObject;
 import org.openehr.jaxb.am.Cardinality;
 import org.openehr.jaxb.rm.MultiplicityInterval;
 
-import static org.openehr.adl.am.AmObjectFactory.newCAttribute;
-import static org.openehr.adl.am.AmObjectFactory.newCComplexObject;
-import static org.openehr.adl.am.AmObjectFactory.newCardinality;
-import static org.openehr.adl.rm.RmObjectFactory.newMultiplicityInterval;
+import java.util.Arrays;
+
+import static org.openehr.adl.am.AmObjectFactory.*;
+import static org.openehr.adl.rm.RmObjectFactory.*;
 
 /**
  * Created by dks02 on 7/28/15.
@@ -30,6 +30,7 @@ public class ADLArchetypeTest extends TestCase
     private RmType ELEMENT = null;
     private RmType CODEDTEXT = null;
     private RmType COUNT = null;
+    private RmType QUANTITY = null;
 
     private RmTypeAttribute item = null;
     private RmTypeAttribute value = null;
@@ -73,6 +74,9 @@ public class ADLArchetypeTest extends TestCase
         assertNotNull(CODEDTEXT);
 
         COUNT = cimirm_.getRmType("COUNT");
+        assertNotNull(COUNT);
+
+        QUANTITY = cimirm_.getRmType("QUANTITY");
         assertNotNull(COUNT);
 
         item = cimirm_.getRmAttribute(ITEM_GROUP.getRmType(), "item");
@@ -157,10 +161,6 @@ public class ADLArchetypeTest extends TestCase
         String id2 = dbGapArch.addNewId(IDType.TERM, "SUBJID", "Subject Identification");
         String id3 = dbGapArch.addNewId(IDType.TERM, "IDENTIFIER", "RM TYPE IDENTIFIER");
 
-//        String id1 = "id1";
-//        String id2 = "id2";
-//        String id3 = "id3";
-
         RmType IDENTIFIER = cimirm_.getRmType("IDENTIFIER");
         assertNotNull(IDENTIFIER);
 
@@ -183,119 +183,84 @@ public class ADLArchetypeTest extends TestCase
         assertNotNull(dbGapArchTxt);
     }
 
-    /*
     @Test
     public void testRangeConstraint()
     {
-        ADLArchetype dbGapArch = adlServices_.createArchetype("dbGapTestArchetype2",
-                "Test Archetype for Testing Integer Range Constraint",
-                cimiMetaData);
+        String name = "dbGapTestArchetype2";
+        String description = "Test Archetype for Testing Integer Range Constraint";
+
+        ADLArchetype dbGapArch = new ADLArchetype(name, cimiMetaData);
         assertNotNull(dbGapArch);
 
-        // ----------------------------------------------------------------------
-        String cId = cimiMetaData.createNewId(); // creates next id
-        String text = "Patient Age";
-        String description = "Patinet Age";
-        String conceptReference = ADLTerminologyServices.getConceptReference(cId);
-        dbGapArch.addArchetypeTerm(cId, null, text, description, null, conceptReference);
-        // ----------------------------------------------------------------------
+        String id1 = dbGapArch.addNewId(IDType.TERM, name, description);
+        String id2 = dbGapArch.addNewId(IDType.TERM, "Patient Age", "Patient Age");
+        String id3 = dbGapArch.addNewId(IDType.TERM, "Age", "Age Range");
 
-        CComplexObject c1 = am_.createComplexObjectConstraint(ELEMENT, cId, occurrence11);
+        dbGapArch.setDefinition(
+                newCComplexObject(ITEM_GROUP.getRmType(), null, id1, ImmutableList.of(
+                        newCAttribute(item.getAttributeName(), null, null, ImmutableList.<CObject>of(
+                                newCComplexObject(ELEMENT.getRmType(), occurrence11, id2, ImmutableList.of(
+                                        newCAttribute(value.getAttributeName(), null, null, ImmutableList.<CObject>of(
+                                                newCComplexObject(COUNT.getRmType(), occurrence11, id3, ImmutableList.of(
+                                                        newCAttribute(value.getAttributeName(), null, null, ImmutableList.<CObject>of(
+                                                                newCInteger(newIntervalOfInteger(33, 90), null)
+                                                        ))
+                                                ))
+                                        ))
+                                ))
+                        ))
+                )));
 
-        cId = cimiMetaData.createNewId(); // creates next id
-        text = "Age";
-        description = "Age Range";
-        conceptReference = ADLTerminologyServices.getConceptReference(cId);
-        dbGapArch.addArchetypeTerm(cId, null, text, description, null, conceptReference);
-
-        CComplexObject c11 = am_.createComplexObjectConstraint(COUNT, cId, occurrence01);
-
-        IntervalOfInteger intervalOfInteger = RmObjectFactory.newIntervalOfInteger(33, 90);
-        CPrimitiveObject intervalConstraint = newCInteger(CIMIPrimitiveTypes.INTEGER, intervalOfInteger, null);
-
-        am_.addAttributeConstraints(c11, value, null, null, intervalConstraint);
-
-        am_.addAttributeConstraints(c1, value, null, null, c11);
-
-        am_.addAttributeConstraints(dbGapArch.getDefinition(), item, null, null, c1);
 
         // ----------------------------------------------------------------------
         // Serialize the Archetype into ADL 2.0 text rendering
-        String dbGapArchTxt = adlServices_.serialize(dbGapArch);
+        String dbGapArchTxt = dbGapArch.serialize();
 
         assertNotNull(dbGapArchTxt);
     }
 
+
     @Test
     public void testValueSetConstraint()
     {
-        ADLArchetype dbGapArch = adlServices_.createArchetype("dbGapTestArchetype3",
-                "Test Archetype for Testing Value Set Constraint",
-                cimiMetaData);
+        String name = "dbGapTestArchetype3";
+        String description = "Test Archetype for Testing Value Set Constraint";
+
+        ADLArchetype dbGapArch = new ADLArchetype(name, cimiMetaData);
         assertNotNull(dbGapArch);
 
-        String cId1 = cimiMetaData.createNewId(); // creates next id
-        String text = "site";
-        String description = "Procedure Site";
-        String conceptReference = ADLTerminologyServices.getConceptReference(cId1);
-        dbGapArch.addArchetypeTerm(cId1, null, text, description, null, conceptReference);
+        String id1 = dbGapArch.addNewId(IDType.TERM, name, description);
+        String id2 = dbGapArch.addNewId(IDType.TERM, "Patient Gender", "Administrative Gender Attribute");
+        String id3 = dbGapArch.addNewId(IDType.TERM, "Gender", "Patient Gender");
 
-        CComplexObject c1 = am_.createComplexObjectConstraint(ELEMENT, cId1, occurrence01);
+        String vs1 = dbGapArch.addNewId(IDType.VALUESET, "Administrative Gender", "Selected administrative genders");
+        String pv1 = dbGapArch.addNewId(IDType.VALUESETMEMBER, "M", "Male");
+        String pv2 = dbGapArch.addNewId(IDType.VALUESETMEMBER, "F", "Female");
 
-        // ----------------------------------------------------------------------
-        // Value Set and its entries
-        String vsId = cimiMetaData.createNewValueSetId(); // creates first value set id
-        String vsDef = "primary sites";
-        String vsDesc = "primary sites description here";
-        String vsConRef = ADLTerminologyServices.getConceptReference(vsId);
-        dbGapArch.addArchetypeTerm(vsId, null, vsDef, vsDesc, null, vsConRef);
-        // ----------------------------------------------------------------------
+        dbGapArch.updateValueSet(vs1, pv1, pv2);
 
-        // Permissible Value 1
-        String pvId1 = cimiMetaData.createNewPermissibleValueId();
-        String pv1Def = "COLN";
-        String pv1Desc = "colonic (includes appendix)";
-        String pv1ConRef = ADLTerminologyServices.getConceptReference(pvId1);
-        dbGapArch.addArchetypeTerm(pvId1, null, pv1Def, pv1Desc, null, pv1ConRef);
+        dbGapArch.setDefinition(
+                newCComplexObject(ITEM_GROUP.getRmType(), null, id1, ImmutableList.of(
+                        newCAttribute(item.getAttributeName(), null, null, ImmutableList.<CObject>of(
+                                newCComplexObject(ELEMENT.getRmType(), occurrence11, id2, ImmutableList.of(
+                                        newCAttribute(value.getAttributeName(), null, null, ImmutableList.<CObject>of(
+                                                newCComplexObject(CODEDTEXT.getRmType(), null, id3, ImmutableList.of(
+                                                        newCAttribute(terminologyId.getAttributeName(), null, null, ImmutableList.<CObject>of(
+                                                                newCString(null, Arrays.asList(vs1), null)
+                                                        )),
+                                                        newCAttribute(code.getAttributeName(), null, null, ImmutableList.<CObject>of(
+                                                                newCString(null, Arrays.asList("*"), null)
+                                                        ))
+                                                ))
+                                        ))
+                                ))
+                        ))
+                )));
 
-        // Permissible Value 2
-        String pvId2 = cimiMetaData.createNewPermissibleValueId();
-        String pv2Def = "RECT";
-        String pv2Desc = "Rectal";
-        String pv2ConRef = ADLTerminologyServices.getConceptReference(pvId2);
-        dbGapArch.addArchetypeTerm(pvId2, null, pv2Def, pv2Desc, null, pv2ConRef);
-
-        String [] members = null;
-        //members = new String[]{"at1", "at2"};
-        // Creates Value-Set entries, Associate permissible value into this value set
-        dbGapArch.updateValueSet(vsId, pvId1, pvId2);
-        CTerminologyCode terminologyCode = am_.getTerminologyConstraint(vsId, members);
-
-        String cId11 = cimiMetaData.createNewId(); // creates next id
-        CComplexObject c11 = am_.createComplexObjectConstraint(CODEDTEXT, cId11, occurrence01);
-
-        if (terminologyCode != null)
-        {
-            if (members != null)
-                am_.addAttributeConstraints(c11, code, null, null, terminologyCode);
-            else
-            {
-
-                CString stringValue = (CString) am_.getPrimitiveType(CIMIPrimitiveTypes.STRING);
-                stringValue.setAssumedValue("*");
-
-                am_.addAttributeConstraints(c11, terminologyId, null, null, terminologyCode);
-                am_.addAttributeConstraints(c11, code, null, null, stringValue);
-            }
-        }
-
-        am_.addAttributeConstraints(c1, value, null, null, c11);
-
-        am_.addAttributeConstraints(dbGapArch.getDefinition(), item, null, null, c1);
 
         // ----------------------------------------------------------------------
         // Serialize the Archetype into ADL 2.0 text rendering
-        String dbGapArchTxt = adlServices_.serialize(dbGapArch);
+        String dbGapArchTxt = dbGapArch.serialize();
 
         assertNotNull(dbGapArchTxt);
     }
@@ -303,75 +268,51 @@ public class ADLArchetypeTest extends TestCase
     @Test
     public void testChoice1ToNConstraint()
     {
-        ADLArchetype dbGapArch = adlServices_.createArchetype("dbGapTestArchetype3",
-                "Test Archetype for Testing Value Set Constraint",
-                cimiMetaData);
+        String name = "dbGapTestArchetype4";
+        String description = "Test Archetype for choice 1 to n (value is either from a integer range or from a coded set)";
+
+        ADLArchetype dbGapArch = new ADLArchetype(name, cimiMetaData);
         assertNotNull(dbGapArch);
 
-        String cId1 = cimiMetaData.createNewId(); // creates next id
-        String text = "site";
-        String description = "Procedure Site";
-        String conceptReference = ADLTerminologyServices.getConceptReference(cId1);
-        dbGapArch.addArchetypeTerm(cId1, null, text, description, null, conceptReference);
+        String id1 = dbGapArch.addNewId(IDType.TERM, name, description);
+        String id2 = dbGapArch.addNewId(IDType.TERM, "Patient BMI", "Body Mass Index Recording");
+        String id3 = dbGapArch.addNewId(IDType.TERM, "BMI", "Patient Body Mass Index");
+        String id4 = dbGapArch.addNewId(IDType.TERM, "BMI Alternate", "Patient Body Mass Index Alternate values");
 
-        CComplexObject c1 = am_.createComplexObjectConstraint(ELEMENT, cId1, occurrence01);
+        String vs1 = dbGapArch.addNewId(IDType.VALUESET, "BMI Alternate Aalues", "Alternative set of values");
+        String pv1 = dbGapArch.addNewId(IDType.VALUESETMEMBER, ".", "Missing");
+        String pv2 = dbGapArch.addNewId(IDType.VALUESETMEMBER, "99", "Unknown");
 
-        // ----------------------------------------------------------------------
-        // Value Set and its entries
-        String vsId = cimiMetaData.createNewValueSetId(); // creates first value set id
-        String vsDef = "primary sites";
-        String vsDesc = "primary sites description here";
-        String vsConRef = ADLTerminologyServices.getConceptReference(vsId);
-        dbGapArch.addArchetypeTerm(vsId, null, vsDef, vsDesc, null, vsConRef);
-        // ----------------------------------------------------------------------
+        dbGapArch.updateValueSet(vs1, pv1, pv2);
 
-        // Permissible Value 1
-        String pvId1 = cimiMetaData.createNewPermissibleValueId();
-        String pv1Def = "COLN";
-        String pv1Desc = "colonic (includes appendix)";
-        String pv1ConRef = ADLTerminologyServices.getConceptReference(pvId1);
-        dbGapArch.addArchetypeTerm(pvId1, null, pv1Def, pv1Desc, null, pv1ConRef);
+        dbGapArch.setDefinition(
+                newCComplexObject(ITEM_GROUP.getRmType(), null, id1, ImmutableList.of(
+                        newCAttribute(item.getAttributeName(), null, null, ImmutableList.<CObject>of(
+                                newCComplexObject(ELEMENT.getRmType(), occurrence11, id2, ImmutableList.of(
+                                        newCAttribute(value.getAttributeName(), null, null, ImmutableList.<CObject>of(
+                                                newCComplexObject(QUANTITY.getRmType(), occurrence01, id3, ImmutableList.of(
+                                                        newCAttribute(value.getAttributeName(), null, null, ImmutableList.<CObject>of(
+                                                                newCReal(newIntervalOfReal(16.2, 67.3), null)
+                                                        ))
+                                                )),
+                                                newCComplexObject(CODEDTEXT.getRmType(), occurrence01, id4, ImmutableList.of(
+                                                        newCAttribute(terminologyId.getAttributeName(), null, null, ImmutableList.<CObject>of(
+                                                                newCString(null, Arrays.asList(vs1), null)
+                                                        )),
+                                                        newCAttribute(code.getAttributeName(), null, null, ImmutableList.<CObject>of(
+                                                                newCString(null, Arrays.asList("*"), null)
+                                                        ))
+                                                ))
+                                        ))
+                                ))
+                        ))
+                )));
 
-        // Permissible Value 2
-        String pvId2 = cimiMetaData.createNewPermissibleValueId();
-        String pv2Def = "RECT";
-        String pv2Desc = "Rectal";
-        String pv2ConRef = ADLTerminologyServices.getConceptReference(pvId2);
-        dbGapArch.addArchetypeTerm(pvId2, null, pv2Def, pv2Desc, null, pv2ConRef);
-
-        String [] members = null;
-        //members = new String[]{"at1", "at2"};
-        // Creates Value-Set entries, Associate permissible value into this value set
-        dbGapArch.updateValueSet(vsId, pvId1, pvId2);
-        CTerminologyCode terminologyCode = am_.getTerminologyConstraint(vsId, members);
-
-        String cId11 = cimiMetaData.createNewId(); // creates next id
-        CComplexObject c11 = am_.createComplexObjectConstraint(CODEDTEXT, cId11, occurrence01);
-
-        if (terminologyCode != null)
-        {
-            if (members != null)
-                am_.addAttributeConstraints(c11, code, null, null, terminologyCode);
-            else
-            {
-
-                CString stringValue = (CString) am_.getPrimitiveType(CIMIPrimitiveTypes.STRING);
-                stringValue.setAssumedValue("*");
-
-                am_.addAttributeConstraints(c11, terminologyId, null, null, terminologyCode);
-                am_.addAttributeConstraints(c11, code, null, null, stringValue);
-            }
-        }
-
-        am_.addAttributeConstraints(c1, value, null, null, c11);
-
-        am_.addAttributeConstraints(dbGapArch.getDefinition(), item, null, null, c1);
 
         // ----------------------------------------------------------------------
         // Serialize the Archetype into ADL 2.0 text rendering
-        String dbGapArchTxt = adlServices_.serialize(dbGapArch);
+        String dbGapArchTxt = dbGapArch.serialize();
 
         assertNotNull(dbGapArchTxt);
     }
-    */
 }

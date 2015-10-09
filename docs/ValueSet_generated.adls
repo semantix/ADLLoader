@@ -11,11 +11,11 @@ description
 definition
     ITEM_GROUP[id1] matches {    -- dbGapTestArchetype3
         item matches {
-            ELEMENT[id2] occurrences matches {0..1} matches {    -- site
+            ELEMENT[id2] occurrences matches {1} matches {    -- Patient Gender
                 value matches {
-                    CODED_TEXT[id3] occurrences matches {0..1} matches {
-                        terminology_id matches {[ac1]}
-                        code matches {; "*"}
+                    CODED_TEXT[id3] matches {    -- Gender
+                        terminology_id matches {"ac1"}
+                        code matches {"*"}
                     }
                 }
             }
@@ -25,7 +25,9 @@ definition
 terminology
     term_bindings = <
         ["snomed-ct"] = <
+            ["id1"] = <http://snomed.info/id1>
             ["id2"] = <http://snomed.info/id2>
+            ["id3"] = <http://snomed.info/id3>
             ["ac1"] = <http://snomed.info/ac1>
             ["at1"] = <http://snomed.info/at1>
             ["at2"] = <http://snomed.info/at2>
@@ -39,20 +41,24 @@ terminology
                 description = <"Test Archetype for Testing Value Set Constraint">
             >
             ["id2"] = <
-                text = <"site">
-                description = <"Procedure Site">
+                text = <"Patient Gender">
+                description = <"Administrative Gender Attribute">
+            >
+            ["id3"] = <
+                text = <"Gender">
+                description = <"Patient Gender">
             >
             ["ac1"] = <
-                text = <"primary sites">
-                description = <"primary sites description here">
+                text = <"Administrative Gender">
+                description = <"Selected administrative genders">
             >
             ["at1"] = <
-                text = <"COLN">
-                description = <"colonic (includes appendix)">
+                text = <"M">
+                description = <"Male">
             >
             ["at2"] = <
-                text = <"RECT">
-                description = <"Rectal">
+                text = <"F">
+                description = <"Female">
             >
         >
     >

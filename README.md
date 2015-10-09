@@ -40,7 +40,7 @@ http://informatics.mayo.edu/maven
             <version>1.2.2</version>
         </dependency>
 ```
-These libraries are availble from Maven Central https://repo1.maven.org/maven2/
+These libraries are available from Maven Central https://repo1.maven.org/maven2/
 These libraries also available at Mayo Clinic Maven Repository
 ```
 <repository>
