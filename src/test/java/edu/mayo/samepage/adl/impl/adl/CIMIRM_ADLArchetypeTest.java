@@ -22,7 +22,7 @@ import static org.openehr.adl.rm.RmObjectFactory.*;
 /**
  * Created by dks02 on 7/28/15.
  */
-public class ADLArchetypeTest extends TestCase
+public class CIMIRM_ADLArchetypeTest extends TestCase
 {
     public String rmPackageName = "DBGAP";
 
@@ -249,7 +249,7 @@ public class ADLArchetypeTest extends TestCase
                                                                 newCString(null, Arrays.asList(vs1), null)
                                                         )),
                                                         newCAttribute(code.getAttributeName(), null, null, ImmutableList.<CObject>of(
-                                                                newCString(null, Arrays.asList("*"), null)
+                                                                newCString(".*", null, null)
                                                         ))
                                                 ))
                                         ))
@@ -300,7 +300,7 @@ public class ADLArchetypeTest extends TestCase
                                                                 newCString(null, Arrays.asList(vs1), null)
                                                         )),
                                                         newCAttribute(code.getAttributeName(), null, null, ImmutableList.<CObject>of(
-                                                                newCString(null, Arrays.asList("*"), null)
+                                                                newCString(".*", null, null)
                                                         ))
                                                 ))
                                         ))
