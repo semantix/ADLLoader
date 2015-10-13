@@ -6,7 +6,13 @@ import edu.mayo.samepage.adl.impl.adl.env.IDType;
 import edu.mayo.samepage.adl.impl.adl.rm.ADLRM;
 import edu.mayo.samepage.adl.impl.adl.rm.ADLRMSettings;
 import org.apache.commons.lang.StringUtils;
+import org.opencimi.adl.rm.OpenCimiRmModel;
+import org.openehr.adl.rm.OpenEhrRmModel;
+import org.openehr.adl.rm.RmModel;
+import org.openehr.adl.rm.RmType;
+import org.openehr.adl.rm.RmTypeAttribute;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -22,20 +28,44 @@ public class ADLMetaData
     protected AtomicInteger vsCounter = new AtomicInteger(0);
     protected AtomicInteger pvCounter = new AtomicInteger(0);
 
-    private ADLSettings adlSettings_ = new ADLSettings();
-    private ADLRMSettings rmSettings_ = new ADLRMSettings(ADLRM.OPENEHR);
+    private ADLSettings adlSettings_ = null;
+    private ADLRMSettings rmSettings_ = null;
+    private RmModel rm_ = OpenCimiRmModel.getInstance();
 
-    public ADLMetaData(ADLSettings adlConfiguration,
-                       ADLRMSettings rmConfiguration,
-                       String RMClassName)
+    public ADLMetaData(ADLRM rm)
     {
-        if(adlConfiguration != null)
-            this.adlSettings_ = adlConfiguration;
+        adlSettings_ = new ADLSettings();
 
-        if (rmConfiguration != null)
-            this.rmSettings_ = rmConfiguration;
+        if (rm == ADLRM.OPENCIMI)
+        {
+            rm_ = OpenCimiRmModel.getInstance();
+            rmSettings_ = new ADLRMSettings(ADLRM.OPENCIMI);
+        }
+        else
+        {
+            rmSettings_ = new ADLRMSettings(ADLRM.OPENEHR);
+            rm_ = OpenEhrRmModel.getInstance();
+        }
+    }
 
-        rmSettings_.setTopRMClassName(RMClassName);
+    public void setRMPackageName(String packageName)
+    {
+        this.rmSettings_.setRMPackage(packageName);
+    }
+
+    public RmType getRmType(String name)
+    {
+        return rm_.getRmType(name);
+    }
+
+    public RmTypeAttribute getRmAttribute(String className, String attribute)
+    {
+        return rm_.getRmAttribute(className, attribute);
+    }
+
+    public List<RmType> getAllTypes()
+    {
+        return rm_.getAllTypes();
     }
 
     public ADLSettings getADLSettings()

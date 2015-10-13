@@ -1,13 +1,10 @@
 package edu.mayo.samepage.adl.impl.adl;
 
 import com.google.common.collect.ImmutableList;
-import edu.mayo.samepage.adl.impl.adl.env.ADLSettings;
 import edu.mayo.samepage.adl.impl.adl.env.IDType;
 import edu.mayo.samepage.adl.impl.adl.rm.ADLRM;
-import edu.mayo.samepage.adl.impl.adl.rm.ADLRMSettings;
 import junit.framework.TestCase;
 import org.junit.Test;
-import org.openehr.adl.rm.OpenEhrRmModel;
 import org.openehr.adl.rm.RmType;
 import org.openehr.adl.rm.RmTypeAttribute;
 import org.openehr.jaxb.am.CObject;
@@ -39,8 +36,6 @@ public class OpenEHRRM_ADLArchetypeTest extends TestCase
 
     private ADLArchetypeHelper helper_ = new ADLArchetypeHelper();
 
-    private OpenEhrRmModel openEHRrm_ = OpenEhrRmModel.getInstance();
-
     private MultiplicityInterval occurrence11 = null;
     private MultiplicityInterval occurrence01 = null;
     private MultiplicityInterval occurrence0n = null;
@@ -58,40 +53,37 @@ public class OpenEHRRM_ADLArchetypeTest extends TestCase
         String topClass = "CLUSTER";
 
         super.setUp();
-        ADLSettings adlSettings = new ADLSettings();
-        ADLRMSettings adlrmSettings = new ADLRMSettings(ADLRM.OPENEHR);
-
-        // Get Reference Model Classes
-        CLUSTER = openEHRrm_.getRmType(topClass);
-        assertNotNull(CLUSTER);
-
-        ELEMENT = openEHRrm_.getRmType("ELEMENT");
-        assertNotNull(ELEMENT);
-
-        DV_CODED_TEXT = openEHRrm_.getRmType("DV_CODED_TEXT");
-        assertNotNull(DV_CODED_TEXT);
-
-        DV_COUNT = openEHRrm_.getRmType("DV_COUNT");
-        assertNotNull(DV_COUNT);
-
-        DV_QUANTITY = openEHRrm_.getRmType("DV_QUANTITY");
-        assertNotNull(DV_COUNT);
-
-        items = openEHRrm_.getRmAttribute(CLUSTER.getRmType(), "items");
-        assertNotNull(items);
-
-        value = openEHRrm_.getRmAttribute(ELEMENT.getRmType(), "value");
-        assertNotNull(value);
-
-        defining_code = openEHRrm_.getRmAttribute(DV_CODED_TEXT.getRmType(), "defining_code");
-        assertNotNull(defining_code);
 
         //terminologyId = openEHRrm_.getRmAttribute(DV_CODED_TEXT.getRmType(), "terminology_id");
         //assertNotNull(defining_code);
 
-        adlrmSettings.setRMPackage(rmPackageName);
+        openEHRMetaData = new ADLMetaData(ADLRM.OPENEHR);
+        openEHRMetaData.setRMPackageName(rmPackageName);
 
-        openEHRMetaData = new ADLMetaData(adlSettings, adlrmSettings, topClass);
+        // Get Reference Model Classes
+        CLUSTER = openEHRMetaData.getRmType(topClass);
+        assertNotNull(CLUSTER);
+
+        ELEMENT = openEHRMetaData.getRmType("ELEMENT");
+        assertNotNull(ELEMENT);
+
+        DV_CODED_TEXT = openEHRMetaData.getRmType("DV_CODED_TEXT");
+        assertNotNull(DV_CODED_TEXT);
+
+        DV_COUNT = openEHRMetaData.getRmType("DV_COUNT");
+        assertNotNull(DV_COUNT);
+
+        DV_QUANTITY = openEHRMetaData.getRmType("DV_QUANTITY");
+        assertNotNull(DV_QUANTITY);
+
+        items = openEHRMetaData.getRmAttribute(CLUSTER.getRmType(), "items");
+        assertNotNull(items);
+
+        value = openEHRMetaData.getRmAttribute(ELEMENT.getRmType(), "value");
+        assertNotNull(value);
+
+        defining_code = openEHRMetaData.getRmAttribute(DV_CODED_TEXT.getRmType(), "defining_code");
+        assertNotNull(defining_code);
 
         // Another way of setting Top RM Class for which this archetype is about
         // DO NOT DELETE FOLLOWING LINE
@@ -159,7 +151,7 @@ public class OpenEHRRM_ADLArchetypeTest extends TestCase
         String id2 = dbGapArch.addNewId(IDType.TERM, "SUBJID", "Subject Identification");
         String id3 = dbGapArch.addNewId(IDType.TERM, "IDENTIFIER", "RM TYPE IDENTIFIER");
 
-        RmType DV_IDENTIFIER = openEHRrm_.getRmType("DV_IDENTIFIER");
+        RmType DV_IDENTIFIER = openEHRMetaData.getRmType("DV_IDENTIFIER");
         assertNotNull(DV_IDENTIFIER);
 
         dbGapArch.setDefinition(

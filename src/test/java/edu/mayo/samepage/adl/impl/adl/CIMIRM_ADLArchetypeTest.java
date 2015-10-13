@@ -1,13 +1,10 @@
 package edu.mayo.samepage.adl.impl.adl;
 
 import com.google.common.collect.ImmutableList;
-import edu.mayo.samepage.adl.impl.adl.env.ADLSettings;
 import edu.mayo.samepage.adl.impl.adl.env.IDType;
 import edu.mayo.samepage.adl.impl.adl.rm.ADLRM;
-import edu.mayo.samepage.adl.impl.adl.rm.ADLRMSettings;
 import junit.framework.TestCase;
 import org.junit.Test;
-import org.opencimi.adl.rm.OpenCimiRmModel;
 import org.openehr.adl.rm.RmType;
 import org.openehr.adl.rm.RmTypeAttribute;
 import org.openehr.jaxb.am.CObject;
@@ -17,7 +14,8 @@ import org.openehr.jaxb.rm.MultiplicityInterval;
 import java.util.Arrays;
 
 import static org.openehr.adl.am.AmObjectFactory.*;
-import static org.openehr.adl.rm.RmObjectFactory.*;
+import static org.openehr.adl.rm.RmObjectFactory.newIntervalOfInteger;
+import static org.openehr.adl.rm.RmObjectFactory.newIntervalOfReal;
 
 /**
  * Created by dks02 on 7/28/15.
@@ -38,10 +36,7 @@ public class CIMIRM_ADLArchetypeTest extends TestCase
     private RmTypeAttribute terminologyId = null;
 
     private ADLMetaData cimiMetaData = null;
-
     private ADLArchetypeHelper helper_ = new ADLArchetypeHelper();
-
-    private OpenCimiRmModel cimirm_ = OpenCimiRmModel.getInstance();
 
     private MultiplicityInterval occurrence11 = null;
     private MultiplicityInterval occurrence01 = null;
@@ -60,40 +55,38 @@ public class CIMIRM_ADLArchetypeTest extends TestCase
         String topClass = "ITEM_GROUP";
 
         super.setUp();
-        ADLSettings adlSettings = new ADLSettings();
-        ADLRMSettings adlrmSettings = new ADLRMSettings(ADLRM.OPENCIMI);
+
+        cimiMetaData = new ADLMetaData(ADLRM.OPENCIMI);
+        cimiMetaData.setRMPackageName(rmPackageName);
 
         // Get Reference Model Classes
-        ITEM_GROUP = cimirm_.getRmType(topClass);
+        ITEM_GROUP = cimiMetaData.getRmType(topClass);
         assertNotNull(ITEM_GROUP);
 
-        ELEMENT = cimirm_.getRmType("ELEMENT");
+        ELEMENT = cimiMetaData.getRmType("ELEMENT");
         assertNotNull(ELEMENT);
 
-        CODEDTEXT = cimirm_.getRmType("CODED_TEXT");
+        CODEDTEXT = cimiMetaData.getRmType("CODED_TEXT");
         assertNotNull(CODEDTEXT);
 
-        COUNT = cimirm_.getRmType("COUNT");
+        COUNT = cimiMetaData.getRmType("COUNT");
         assertNotNull(COUNT);
 
-        QUANTITY = cimirm_.getRmType("QUANTITY");
-        assertNotNull(COUNT);
+        QUANTITY = cimiMetaData.getRmType("QUANTITY");
+        assertNotNull(QUANTITY);
 
-        item = cimirm_.getRmAttribute(ITEM_GROUP.getRmType(), "item");
+        item = cimiMetaData.getRmAttribute(ITEM_GROUP.getRmType(), "item");
         assertNotNull(item);
 
-        value = cimirm_.getRmAttribute(ELEMENT.getRmType(), "value");
+        value = cimiMetaData.getRmAttribute(ELEMENT.getRmType(), "value");
         assertNotNull(value);
 
-        code = cimirm_.getRmAttribute(CODEDTEXT.getRmType(), "code");
+        code = cimiMetaData.getRmAttribute(CODEDTEXT.getRmType(), "code");
         assertNotNull(code);
 
-        terminologyId = cimirm_.getRmAttribute(CODEDTEXT.getRmType(), "terminology_id");
-        assertNotNull(code);
+        terminologyId = cimiMetaData.getRmAttribute(CODEDTEXT.getRmType(), "terminology_id");
+        assertNotNull(terminologyId);
 
-        adlrmSettings.setRMPackage(rmPackageName);
-
-        cimiMetaData = new ADLMetaData(adlSettings, adlrmSettings, topClass);
 
         // Another way of setting Top RM Class for which this archetype is about
         // DO NOT DELETE FOLLOWING LINE
@@ -161,7 +154,7 @@ public class CIMIRM_ADLArchetypeTest extends TestCase
         String id2 = dbGapArch.addNewId(IDType.TERM, "SUBJID", "Subject Identification");
         String id3 = dbGapArch.addNewId(IDType.TERM, "IDENTIFIER", "RM TYPE IDENTIFIER");
 
-        RmType IDENTIFIER = cimirm_.getRmType("IDENTIFIER");
+        RmType IDENTIFIER = cimiMetaData.getRmType("IDENTIFIER");
         assertNotNull(IDENTIFIER);
 
         dbGapArch.setDefinition(
