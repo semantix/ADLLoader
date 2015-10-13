@@ -37,7 +37,7 @@ http://informatics.mayo.edu/maven
         <dependency>
             <groupId>org.openEHR.adl2core</groupId>
             <artifactId>model-rm-opencimi</artifactId>
-            <version>1.2.2</version>
+            <version>1.3.0</version>
         </dependency>
 ```
 These libraries are available from Maven Central https://repo1.maven.org/maven2/
