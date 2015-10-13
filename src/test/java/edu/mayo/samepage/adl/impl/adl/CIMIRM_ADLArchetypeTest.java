@@ -101,15 +101,15 @@ public class CIMIRM_ADLArchetypeTest extends TestCase
 
         cimiMetaData.setDefaultTerminologySetName("snomed-ct");
 
-        occurrence01 = newMultiplicityInterval(0, 1);
-        occurrence11 = newMultiplicityInterval(1, 1);
-        occurrence0n = newMultiplicityInterval(0, null);
-        occurrence1n = newMultiplicityInterval(1, null);
+        occurrence01 = helper_.createMultiplicity(0, 1);
+        occurrence11 = helper_.createMultiplicity(1, 1);
+        occurrence0n = helper_.createMultiplicity(0, null);
+        occurrence1n = helper_.createMultiplicity(1, null);
 
-        cardinality01 = newCardinality(true, false, occurrence01);
-        cardinality11 = newCardinality(true, false, occurrence11);
-        cardinality0n = newCardinality(true, false, occurrence0n);
-        cardinality1n = newCardinality(true, false, occurrence1n);
+        cardinality01 = helper_.createCardinality(occurrence01, true, true);
+        cardinality11 = helper_.createCardinality(occurrence11, true, true);
+        cardinality0n = helper_.createCardinality(occurrence0n, true, true);
+        cardinality1n = helper_.createCardinality(occurrence1n, true, true);
     }
 
     @Test
