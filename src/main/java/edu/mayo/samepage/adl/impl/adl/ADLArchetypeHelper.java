@@ -4,10 +4,7 @@ import com.google.common.collect.ImmutableList;
 import org.apache.commons.lang.StringUtils;
 import org.openehr.adl.rm.RmType;
 import org.openehr.adl.rm.RmTypeAttribute;
-import org.openehr.jaxb.am.CComplexObject;
-import org.openehr.jaxb.am.CObject;
-import org.openehr.jaxb.am.Cardinality;
-import org.openehr.jaxb.am.ValueSetItem;
+import org.openehr.jaxb.am.*;
 import org.openehr.jaxb.rm.*;
 
 import java.util.List;
@@ -63,7 +60,7 @@ public class ADLArchetypeHelper
                                                         RmTypeAttribute rmTypeAttribute,
                                                         String id,
                                                         MultiplicityInterval occurrence,
-                                                        List<CObject> constraints)
+                                                        List<CObject> constraintsOnAttribute)
     {
         if (rmType == null)
             return null;
@@ -72,8 +69,30 @@ public class ADLArchetypeHelper
             return newCComplexObject(rmType.getRmType(), occurrence, id, null);
 
         return newCComplexObject(rmType.getRmType(), occurrence, id, ImmutableList.of(
-                newCAttribute(rmTypeAttribute.getAttributeName(), null, null, constraints
+                newCAttribute(rmTypeAttribute.getAttributeName(), null, null, constraintsOnAttribute
                 )));
+    }
+
+    public CComplexObject createComplexObjectConstraint(RmType rmType,
+                                                        String id,
+                                                        MultiplicityInterval occurrence,
+                                                        List<CAttribute> attributeConstraints)
+    {
+        if (rmType == null)
+            return null;
+
+        return newCComplexObject(rmType.getRmType(), occurrence, id, attributeConstraints);
+    }
+
+    public CAttribute createAttributeConstraint(RmTypeAttribute attribute,
+                                                MultiplicityInterval occurrence,
+                                                Cardinality cardinality,
+                                                List<CObject> constraintsOnAttribute)
+    {
+        if (attribute == null)
+            return null;
+
+        return newCAttribute(attribute.getAttributeName(), occurrence, cardinality, constraintsOnAttribute);
     }
 
     public ResourceDescription createResourceDescription(String copyright,
