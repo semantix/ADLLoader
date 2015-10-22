@@ -116,13 +116,19 @@
             <version>${cimi-rm.version}</version>
         </dependency>
 
-        <!-- The project "basic" is on GitHub and being referenced using jitpack.io
-        mechanism -->
         <dependency>
-            <groupId>com.github.semantix</groupId>
+            <groupId>org.lexemantix.basic</groupId>
             <artifactId>basic</artifactId>
             <version>1.0.1</version>
         </dependency>
+
+        <!-- The project "basic" is on GitHub and being referenced using jitpack.io
+        mechanism -->
+        <!--dependency>
+            <groupId>com.github.semantix</groupId>
+            <artifactId>basic</artifactId>
+            <version>1.0.1</version>
+        </dependency-->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
