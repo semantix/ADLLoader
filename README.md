@@ -55,4 +55,12 @@ These libraries also available at Mayo Clinic Maven Repository
             </snapshots>
 </repository>
 ```
+ADLWorks 1.0.0 jar file availabe at Mayo's repository with dependency
+```
+<dependency>
+  <groupId>edu.mayo.samepage</groupId>
+  <artifactId>adlworks</artifactId>
+  <version>1.0.0</version>
+</dependency>
+```
 * All Other previous instructions are part of this library - ADLWorks.
